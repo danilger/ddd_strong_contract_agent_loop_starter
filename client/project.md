@@ -1,6 +1,6 @@
 # Client — контекст приложения
 
-<!--
-Заполняет root-агент при handoff. До handoff — без продуктового содержимого.
-Сюда: экраны/флоу, сущности UI, ограничения продукта. Не дублировать FSD из AGENTS.md.
--->
+## Auth UI
+
+Минимальная страница register / login / me / logout к `authContract`.
+Access token в памяти; refresh cookie с `credentials: 'include'`.

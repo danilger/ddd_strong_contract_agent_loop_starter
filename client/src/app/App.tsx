@@ -1,6 +1,6 @@
-import { HelloPage } from '@/pages/hello';
+import { AuthPage } from '@/pages/auth';
 
 /** Корневой composition root приложения */
 export function App() {
-  return <HelloPage />;
+  return <AuthPage />;
 }

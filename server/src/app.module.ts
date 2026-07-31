@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { DrizzleModule } from './db/drizzle.module';
+import { HealthController } from './health/health.controller';
 
+/** Корневой модуль приложения */
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [DrizzleModule, AuthModule],
+  controllers: [HealthController],
 })
 export class AppModule {}

@@ -23,7 +23,7 @@ export default defineConfig({
   webServer: {
     command: 'npx nest start',
     cwd: serverRoot,
-    url: 'http://localhost:3000/',
+    url: 'http://localhost:3000/health',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },

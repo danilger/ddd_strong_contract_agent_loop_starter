@@ -1,11 +1,16 @@
 import { initContract } from '@ts-rest/core';
-import { helloContract } from './hello/hello.contract';
+import { authContract } from './auth/auth.contract';
+import { healthContract } from './health/health.contract';
 
 const c = initContract();
 
 /** Агрегированный HTTP-контракт API */
 export const apiContract = c.router({
-  ...helloContract,
+  ...healthContract,
+  ...authContract,
 });
 
-export * from './hello/hello.contract';
+export * from './shared/api.common';
+export * from './auth/auth.schemas';
+export * from './auth/auth.contract';
+export * from './health/health.contract';

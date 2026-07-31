@@ -29,7 +29,7 @@ export default defineConfig({
     {
       command: 'npm run start -w server',
       cwd: repoRoot,
-      url: 'http://localhost:3000/',
+      url: 'http://localhost:3000/health',
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
     },

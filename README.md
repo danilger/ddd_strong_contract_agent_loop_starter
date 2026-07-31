@@ -91,6 +91,23 @@ npm run build:client
 
 Клиент тянет `@repo/contract` через Vite alias на исходники; API base URL — `VITE_API_BASE_URL` (по умолчанию `http://localhost:3000`).
 
+### Auth + SQLite (из коробки)
+
+Живой эталон BC на server: `server/src/auth` + `server/src/db`.
+
+- **Auth** — только identity: register / login / refresh / logout / me. Без ролей.
+- **Access** — JWT Bearer; **refresh** — httpOnly cookie `refresh_token` (path `/auth`).
+- **DB** — SQLite файл (`DATABASE_PATH` или `server/data/app.sqlite`), Docker не нужен.
+- Env: см. [`server/.env.example`](server/.env.example) (`JWT_SECRET`, `DATABASE_PATH`, `PORT`).
+- Client: страница Auth (`credentials: 'include'` + access token в памяти).
+- Health: `GET /health` → `{ ok: true }`.
+
+```bash
+npm run build:contract
+npm run dev:server
+# POST http://localhost:3000/auth/register { "email":"a@b.c", "password":"password1" }
+```
+
 ---
 
 ## Server: lint и границы DDD
@@ -127,7 +144,7 @@ ESLint видит **импорты в файле** (`no-restricted-imports`): «
 - **domain** — нельзя `@repo/contract`, drizzle, `@ts-rest/*`, Nest HTTP, импорты из `application` / `infrastructure` / `presentation`
 - **application** — нельзя contract, drizzle, `@ts-rest/*`, `infrastructure` / `presentation`
 - **presentation** — нельзя drizzle и прямой `infrastructure` (адаптеры вешаются в `*.module.ts`)
-- **check-file** — запрет `*.service.ts`, `*UseCase`, папки `use-cases/` вне каноничных слоёв (hello-scaffold `app.*` временно в ignore)
+- **check-file** — запрет `*.service.ts`, `*UseCase`, папки `use-cases/` вне каноничных слоёв
 
 Направление по канону: `presentation → application → domain`; `infrastructure` реализует порты application и не торчит в presentation напрямую.
 
@@ -289,4 +306,4 @@ Server docs: `npm run docs:domain-map -- <slug>`, `npm run docs:context-map -- -
 
 ## Что пока не в этом README
 
-Auth/user BC, Drizzle, полный OpenSpec development-process из tutor2. Правила кода: корневой и папочные `AGENTS.md`.
+Полный OpenSpec development-process из tutor2 (propose/apply cookbook сверх текущего pipeline). Правила кода: корневой и папочные `AGENTS.md`.

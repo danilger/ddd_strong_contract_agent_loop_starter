@@ -1,10 +1,11 @@
 # Разработка в `server/`
 
 Сервер — **DDD + CQRS + domain events** поверх `@nestjs/cqrs`.
-Эталонный модуль (read-only): [`.agents/examples/server/src/user/`](../.agents/examples/server/src/user/).
-Новый код **копирует его каркас** в `server/src/<slug>/`, не use case-ы и не `*Service`.
+Живой эталон BC: [`src/auth/`](./src/auth/) + persistence [`src/db/`](./src/db/) (SQLite).
+Каркас имён/слоёв (CRUD, read-only): [`.agents/examples/server/src/user/`](../.agents/examples/server/src/user/).
+Новый код **копирует каркас слоёв** в `server/src/<slug>/`, не use case-ы и не application-`*Service`.
 
-## Контекст конкретного приложения
+## Контекст конкретного приложения`
 
 Общие правила архитектуры — в этом файле.
 Детали логики и функционала **этого** продукта (домены, роли, сценарии, ограничения ТЗ) —
@@ -124,7 +125,7 @@ interface XReadRepositoryPort {
 ## GoF-нейминг (обязательный для server-кода)
 
 - Формат: `<domain>.<pattern>` в файлах, `<Domain><Pattern>` в классах.
-- CQRS-эталон имён и слоёв: `.agents/examples/server/src/user/` (Command, Handler, Adapter, Port).
+- CQRS-эталон имён и слоёв: `src/auth/` (живой) и `.agents/examples/server/src/user/` (CRUD-каркас).
 - Запрещено: `*UseCase`, `use-cases/`, `*Service` для application-логики, `*Repository` без `.adapter` или `.port`.
 
 
@@ -240,7 +241,7 @@ Skills: `.agents/skills/domain-drawio-map`, `.agents/skills/context-map-drawio`
 
 ## Чеклист перед завершением
 
-1. Новый код повторяет структуру `.agents/examples/server/src/user/`?
+1. Новый код повторяет структуру `src/auth/` или `.agents/examples/server/src/user/`?
 2. Все `save()` внутри UoW, `commit()` — после успеха?
 3. Query не трогает write port?
 4. Application/domain без `@repo/contract`?

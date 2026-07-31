@@ -1,6 +1,6 @@
 # Contract — контекст приложения
 
-<!--
-Заполняет root-агент при handoff. До handoff — без продуктового содержимого.
-Сюда: какие API/BC описываем в этой задаче. Не дублировать правила Zod/ts-rest из AGENTS.md.
--->
+## Auth + health
+
+- `authContract` — register / login / refresh / logout / me (identity only).
+- `healthContract` — `GET /health` для liveness / e2e webServer.

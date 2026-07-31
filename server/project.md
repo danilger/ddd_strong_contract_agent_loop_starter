@@ -1,10 +1,11 @@
 # Server — контекст приложения
 
-<!--
-Заполняет root-агент (Cursor|Pi) при handoff под конкретную задачу.
-До handoff файл остаётся без продуктового содержимого.
+## Auth (чистый identity)
 
-Сюда — частное: домены/BC этого приложения, роли, сценарии, ограничения ТЗ,
-стек persistence/auth для продукта, ссылки на контрактные поверхности.
-Не дублировать общие DDD/CQRS правила из AGENTS.md.
--->
+BC отвечает только на «кто ты?»: credentials (password), session/JWT, opaque `userId`.
+Без roles / permissions.
+
+Поверхности: `POST /auth/register|login|refresh|logout`, `GET /auth/me`.
+Refresh — httpOnly cookie `refresh_token` (path `/auth`); access — Bearer JWT (`sub`, `sid`).
+
+Persistence: Drizzle + SQLite (`DATABASE_PATH`, по умолчанию `./data/app.sqlite`). Без Docker.

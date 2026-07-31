@@ -143,14 +143,13 @@ export default tseslint.config(
     ignores: [
       'src/main.ts',
       'src/app.module.ts',
-      // Nest hello scaffold until replaced by a real BC module
-      'src/app.controller.ts',
-      'src/app.controller.spec.ts',
-      'src/app.service.ts',
+      'src/db/**/*.ts',
+      'src/health/**/*.ts',
       'src/**/domain/**/*.ts',
       'src/**/application/**/*.ts',
       'src/**/presentation/**/*.ts',
       'src/**/infrastructure/**/*.ts',
+      'src/**/*.module.ts',
     ],
     plugins: {
       'check-file': checkFile,
