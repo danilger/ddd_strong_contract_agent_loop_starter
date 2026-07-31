@@ -3,13 +3,14 @@ name: ddd-start
 description: >-
   Conduct confirm-gated DDD strategic planning from a business idea into canon/
   artifacts (intent, context, event storming, BCs, domain model, rules, use cases,
-  architecture), then optionally root handoff to plan.yml. Use when the user runs
-  /start, asks to start DDD planning, or resume canon planning.
+  architecture), then two-phase root handoff: contract plan first, server plan only
+  after user approves the finished contract. Use when the user runs /start,
+  /handoff-server, asks to start DDD planning, or resume canon planning.
 ---
 
 # /start — DDD Strategic Planning → canon/
 
-Goal: walk the user from a rough business idea to agreed architecture artifacts under `canon/`, then optionally run root handoff into package `plan.yml` / `project.md`.
+Goal: walk the user from a rough business idea to agreed architecture artifacts under `canon/`, then optionally run **two-phase** root handoff into package `plan.yml` / `project.md`.
 
 ## First actions
 
@@ -21,7 +22,8 @@ Goal: walk the user from a rough business idea to agreed architecture artifacts 
 ## Out of scope until handoff confirm
 
 - Do **not** write feature code under `contract|server|client/src`.
-- Do **not** edit package OpenSpec changes or `*/plan.yml` / package `project.md` until the user explicitly confirms **Этап 10 (Handoff)**.
+- Do **not** edit package OpenSpec changes or `*/plan.yml` / package `project.md` until the user explicitly confirms **Этап 10 (contract handoff)**.
+- Do **not** fill `server/plan.yml` until **Этап 11** after explicit contract approve (or `/handoff-server`).
 - Do **not** invent business rules the user did not state; ask instead.
 - Point out contradictions between intent, context, event storming, and later artifacts.
 
@@ -51,7 +53,8 @@ Update after every stage transition. Stages:
 | 7 | rules | `canon/06_rules.md` |
 | 8 | use_cases | `canon/07_use_cases.md` |
 | 9 | architecture | `canon/08_architecture.md` |
-| 10 | handoff | package `project.md` + `plan.yml` (optional) |
+| 10 | contract_handoff | `*/project.md` + `contract/plan.yml` only |
+| 11 | server_handoff | `server/plan.yml` after contract approve |
 
 ---
 
@@ -163,33 +166,70 @@ Optional mention of scaffolding a starter is informational only — do not gener
 
 ---
 
-## Этап 10: Root handoff (separate confirm)
+## Этап 10: Contract handoff (separate confirm)
 
 After stage 9 is `done`, ask:
 
-> Запустить root handoff сейчас? (заполнить `*/project.md` и `contract|server/plan.yml`; `client/plan.yml` остаётся пустым)
+> Запустить **contract handoff** сейчас? (заполнить `*/project.md` и только `contract/plan.yml`; `server|client/plan.yml` без рабочих slug)
 
 ### If no
 
-Set handoff status to skipped / not requested in `PROGRESS.md`. Stop. Canon planning is complete.
+Set `contract_handoff` status to skipped / not requested in `PROGRESS.md`. Stop. Canon planning is complete. Do not run stage 11.
 
 ### If yes
 
-Follow root [`AGENTS.md`](../../../AGENTS.md) handoff rules:
+Follow root [`AGENTS.md`](../../../AGENTS.md) **contract handoff** rules:
 
 1. Ensure loop-required files exist in each package (`contract|server|client`):
    `project.md`, `plan.yml`, `openspec/config.yaml`, `AGENTS.md`.
    Root has no OpenSpec contour.
-2. Fill `contract/plan.yml` with contract slugs.
-3. Fill `server/plan.yml` with code/BC slugs **and** `add_to_client_plan_<client-slug>` entries (never raw client slugs as plan lines).
-4. Leave `client/plan.yml` empty (no work slugs).
-5. Fill package `project.md` files with product context distilled from `canon/` (domains, scenarios, constraints). Leave architecture rules in `*/AGENTS.md`.
+2. Fill package `project.md` files with product context distilled from `canon/` (domains, scenarios, constraints). Leave architecture rules in `*/AGENTS.md`.
+3. Fill **only** `contract/plan.yml` with contract slugs (e.g. `*-contract`).
+4. Leave `server/plan.yml` **without** work slugs (empty / only `#` comments). **Do not** invent server queue here.
+5. Leave `client/plan.yml` empty (no work slugs).
 6. Do **not** implement features in package `src`.
 
-Mark handoff `done` in `PROGRESS.md`. Suggest next operator step: run contract loop, then server, then client (see README).
+Mark `contract_handoff` `done` in `PROGRESS.md`. Suggest next operator steps:
+
+1. Run **contract loop**.
+2. Human review of `contract/src`.
+3. Explicit approve («контракт принят» / equivalent).
+4. Then `/handoff-server` (этап 11).
+
+---
+
+## Этап 11: Server handoff (after contract approve)
+
+Entry: `/handoff-server`, or resume `/start` when stage 10 is `done` and 11 is not.
+
+**Preconditions (all required):**
+
+1. Stage 10 `contract_handoff` is `done` (not skipped).
+2. User has **explicitly** approved the finished contract («контракт принят», «approve», «контракт ок», or equivalent in this chat). If not yet approved — ask for approve or stop; do **not** fill `server/plan.yml`.
+3. Prefer reading actual `contract/src/**` (routers, statuses, DTOs) plus `canon/` when drafting the server queue.
+
+Ask (unless the user already confirmed server handoff in the same message as approve):
+
+> Заполнить `server/plan.yml` сейчас? (по готовому контракту + canon; `client/plan.yml` не трогать)
+
+### If no
+
+Leave `server_handoff` pending / skipped as the user directs. Stop.
+
+### If yes
+
+1. Optionally refresh `server/project.md` from canon + approved contract surfaces (still no edits to `contract/src`).
+2. Fill `server/plan.yml` with code/BC slugs **and** `add_to_client_plan_<client-slug>` entries (never raw client slugs as plan lines).
+3. Do **not** edit `client/plan.yml` or `contract/plan.yml` / `contract/src`.
+4. Do **not** implement features in package `src`.
+
+Mark `server_handoff` `done` in `PROGRESS.md`. Suggest: run **server loop**, then **client loop** when `client/plan.yml` gets appends (see README).
 
 ---
 
 ## Completion
 
-Planning is complete when stages 1–9 are `done` and artifacts exist. Handoff is complete only after stage 10 confirm and apply (or explicitly skipped).
+- Stages **1–9** `done` → strategic planning complete (`canon/` artifacts exist).
+- Stage **10** applied → operator may run **contract loop**; `server/plan.yml` still empty of work slugs.
+- Stage **11** applied (after contract approve) → operator may run **server loop**; client still only via `add_to_client_plan_*` append.
+- Skipping stage 10 skips stage 11 as well.

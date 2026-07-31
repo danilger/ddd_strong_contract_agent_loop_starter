@@ -47,7 +47,10 @@ contract (Zod + ts-rest)  →  presentation adapters  →  commands/queries  →
 
 - Агент в этом каталоге: **только Pi** (и loop с `projectPath` = `contract/`).
 - `plan.yml` автономен: slug’и `*-contract`, без зависимости от server/client plans.
+  Наполняет root на **этапе 10 (contract handoff)**; `server/plan.yml` на этой фазе не пишется.
 - Sole writer: `contract/src/**`. Не править `server/` / `client/` из этого контура.
+- После contract loop: human review → **явный approve** оператора («контракт принят»).
+  Только после approve root заполняет `server/plan.yml` (`/handoff-server`, этап 11).
 
 ## Новый bounded context
 

@@ -6,7 +6,7 @@ UI не описывает API самостоятельно.
 ## Контекст конкретного приложения
 
 Общие правила FSD/contract-bridge — в этом файле.
-Продуктовые детали UI/сценариев — в [`project.md`](./project.md) (заполняет root при handoff; до того пуст).
+Продуктовые детали UI/сценариев — в [`project.md`](./project.md) (заполняет root при contract handoff; до того пуст).
 
 Детали методологии on-demand: skill `feature-sliced-design`
 (`.agents/skills/feature-sliced-design/`, `/skill:feature-sliced-design`).
@@ -87,7 +87,8 @@ import { Y } from "@/features/b";        // features → features
 ## Loop / Pi
 
 - Агент: **только Pi** (loop `projectPath` = `client/`).
-- `plan.yml` на старте пуст; наполняется **только** через server-change `add_to_client_plan_*` (append).
+- `plan.yml` на старте пуст; наполняется **только** через server-change `add_to_client_plan_*` (append),
+  после **server-handoff** (этап 11) и apply соответствующих server changes — не раньше.
 - **Запрещено** писать в `plan.yml`, `contract/src/**`, `server/**`.
 - Прогресс = `openspec/changes` (active/archive). Если plan опустел — loop стоп; после новых строк — рестарт.
 

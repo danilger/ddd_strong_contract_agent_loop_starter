@@ -13,7 +13,8 @@ Statuses: `pending` | `in_progress` | `waiting_user` | `done`
 | 7 | rules | pending | → `canon/06_rules.md` |
 | 8 | use_cases | pending | → `canon/07_use_cases.md` |
 | 9 | architecture | pending | → `canon/08_architecture.md` |
-| 10 | handoff | pending | package `project.md` + `plan.yml` (optional) |
+| 10 | contract_handoff | pending | `*/project.md` + `contract/plan.yml` only |
+| 11 | server_handoff | pending | `server/plan.yml` after contract approve |
 
 Current stage: `1` (intent)
 

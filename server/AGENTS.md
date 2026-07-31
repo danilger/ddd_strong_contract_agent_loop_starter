@@ -5,13 +5,13 @@
 Каркас имён/слоёв (CRUD, read-only): [`.agents/examples/server/src/user/`](../.agents/examples/server/src/user/).
 Новый код **копирует каркас слоёв** в `server/src/<slug>/`, не use case-ы и не application-`*Service`.
 
-## Контекст конкретного приложения`
-
+## Контекст конкретного приложения
 Общие правила архитектуры — в этом файле.
 Детали логики и функционала **этого** продукта (домены, роли, сценарии, ограничения ТЗ) —
 в [`project.md`](./project.md).
 
-До завершения root-handoff `project.md` пуст (или только заголовок-заглушка).
+До завершения **contract handoff** (этап 10) `project.md` пуст (или только заголовок-заглушка).
+`plan.yml` без рабочих slug до **server handoff** (этап 11 / `/handoff-server`) после approve контракта.
 Root-агент заполняет его под задачу; Pi/loop читает оба файла.
 
 ## Направление зависимостей
@@ -219,7 +219,9 @@ Skills: `.agents/skills/domain-drawio-map`, `.agents/skills/context-map-drawio`
 
 - Агент: **только Pi** (loop `projectPath` = `server/`).
 - Не менять `contract/src/**`, `client/src/**`, `client/openspec/**`.
-- Очередь UI планирует **root** в `server/plan.yml`. Типы slug’ов:
+- `plan.yml` наполняет **root** на **server-handoff** (этап 11), только после явного approve готового контракта — не на contract handoff.
+  До того файл пуст / только `#` (без рабочих slug).
+- Очередь UI планирует root в `server/plan.yml`. Типы slug’ов:
   - обычный BC/code change (например `create_authorization_bc`);
   - `add_to_client_plan_<client-slug>` — полноценный OpenSpec-change в **server** openspec;
     apply = **append-only** одна строка `<client-slug>` в конец `../client/plan.yml`.

@@ -2,6 +2,8 @@
 
 Каркас: `contract/` (`@repo/contract`) · `server/` · `client/` + правила в `AGENTS.md`.
 
+Агенты: `/start` → `canon/` → **contract handoff** → contract loop → **human approve** → `/handoff-server` → server loop → client по append. Подробности — § [Агенты, OpenSpec и loop](#агенты-openspec-и-loop).
+
 ## npm workspaces — как устроено
 
 ```text
@@ -185,7 +187,7 @@ Alias: `@/…` (`withSlash: true`), как в Vite/tsconfig.
 
 | Контур | Агент | cwd / `projectPath` | Что делает |
 |--------|--------|---------------------|------------|
-| **корень** | Cursor или Pi | репо | `/start` → `canon/`; handoff в пакетные `plan.yml` / `project.md`. **Без** OpenSpec |
+| **корень** | Cursor или Pi | репо | `/start` → `canon/`; two-phase handoff (`contract` → approve → `server`). **Без** OpenSpec |
 | `contract/` | **только Pi** | `…/contract` | OpenSpec + loop по `contract/plan.yml` |
 | `server/` | **только Pi** | `…/server` | OpenSpec + loop по `server/plan.yml` |
 | `client/` | **только Pi** | `…/client` | OpenSpec + loop по `client/plan.yml` |
@@ -199,15 +201,17 @@ Loop (LangGraph в `.agents/loop`) на каждый запуск получае
 
 ```text
 .agents/skills/                 # SSOT всех skills (Cursor + Pi walk-up)
-  ddd-start/                    # протокол /start
+  ddd-start/                    # протокол /start + этапы 10–11 handoff
   openspec-*/                   # OpenSpec skills для Pi@package
   domain-drawio-map/
   context-map-drawio/
   feature-sliced-design/
   react-component-diagram/      # client: npm run docs:component-tree
 
-.cursor/commands/start.md       # Cursor: slash /start → Read ddd-start
-.pi/prompts/start.md            # Pi root: slash /start → тот же skill
+.cursor/commands/start.md          # Cursor: slash /start → Read ddd-start
+.cursor/commands/handoff-server.md # Cursor: slash /handoff-server → этап 11
+.pi/prompts/start.md               # Pi root: slash /start → тот же skill
+.pi/prompts/handoff-server.md      # Pi root: slash /handoff-server → этап 11
 
 contract|server|client/
   openspec/                     # контур OpenSpec пакета
@@ -219,35 +223,45 @@ contract|server|client/
 | Роль | Cursor | Pi |
 |------|--------|-----|
 | Strategic Design | `/start` в корне | `/start` в корне |
-| Handoff | чат в корне по `AGENTS.md` | то же |
+| Contract handoff | этап 10 в `/start` | то же |
+| Server handoff | `/handoff-server` (после approve) | то же |
 | OpenSpec propose/apply/… | — (не в корне) | cwd пакета + `/opsx-*`; skills из `.agents` (walk-up) |
 
-Неизбежный дубль платформ: только пара launcher’ов `/start` (Cursor command ≠ Pi prompt). Протокол один — `ddd-start`.
+Неизбежный дубль платформ: пары launcher’ов `/start` и `/handoff-server` (Cursor command ≠ Pi prompt). Протокол один — `ddd-start`.
 
 Тройной `opsx-*` в `contract|server|client/.pi/prompts` остаётся: Pi не читает prompts из `.agents`, loop идёт с cwd пакета.
 
-### Pipeline
+### Pipeline (two-phase handoff)
+
+**Инвариант:** `server/plan.yml` заполняется только после явного approve готового контракта. `client/plan.yml` — только через server `add_to_client_plan_*` (append).
 
 0. **`/start`** (Cursor или Pi в корне) — Strategic Design → `canon/`:
    - команда: `.cursor/commands/start.md` / `.pi/prompts/start.md`;
    - протокол: skill `ddd-start` (`.agents/skills/ddd-start/SKILL.md`);
    - этапы 1–9 confirm-gated (intent → context → event storming → BC → model → rules → use cases → architecture);
-   - этап 10 handoff — **отдельный** confirm; до него `*/plan.yml` не трогать.
-1. **Root handoff** (Cursor или Pi в корне) — только подготовка планов, без кода фич:
-   - заполняет `contract/plan.yml`;
-   - заполняет `server/plan.yml` **с учётом готовности эндпоинтов**: code/BC slug’и и
-     явные `add_to_client_plan_<client-slug>` (когда после какого server-шага можно кормить client);
-   - оставляет `client/plan.yml` **пустым**;
-   - заполняет пакетные `project.md` **продуктовым** контекстом (до handoff они пустые).
-     Общие правила — в `*/AGENTS.md`; частная логика — в `*/project.md`.
-2. **loop@contract** — пишет контракт; review человеком.
-3. **loop@server** — исполняет `server/plan.yml` по порядку; **не** invent’ит client-очередь.
+   - до confirm этапа 10 **не** трогать `*/plan.yml` / `project.md`.
+1. **Contract handoff** (этап 10, отдельный confirm) — без кода фич:
+   - заполняет пакетные `project.md` продуктовым контекстом;
+   - заполняет **только** `contract/plan.yml`;
+   - оставляет `server/plan.yml` и `client/plan.yml` **без** рабочих slug.
+2. **loop@contract** — пишет контракт.
+3. **Human approve** — оператор явно принимает `contract/src` («контракт принят» и т.п.).
+4. **Server handoff** (этап 11 / `/handoff-server`) — только после approve:
+   - заполняет `server/plan.yml` по готовому контракту + canon (code/BC + `add_to_client_plan_*`);
+   - `client/plan.yml` не трогает.
+5. **loop@server** — исполняет `server/plan.yml` по порядку; **не** invent’ит client-очередь.
    Change `add_to_client_plan_<client-slug>` → append `<client-slug>` в `client/plan.yml`.
-4. **loop@client** — стартует, когда в `client/plan.yml` есть ≥1 slug; если план кончился раньше новых append — loop останавливается, оператор **рестартит**.
-5. **Hotfix** — Pi с cwd в нужном пакете + `/opsx-*` + локальный `openspec/`.
+6. **loop@client** — стартует, когда в `client/plan.yml` есть ≥1 slug; если план кончился раньше новых append — loop останавливается, оператор **рестартит**.
+7. **Hotfix** — Pi с cwd в нужном пакете + `/opsx-*` + локальный `openspec/`.
 
 ```text
-/start → canon/* ──confirm──► Root handoff → contract loop → server loop
+/start → canon/* ──confirm──► contract handoff → contract loop → human approve
+                                                              │
+                                                              ▼
+                                                    /handoff-server (server plan)
+                                                              │
+                                                              ▼
+                                                         server loop
                                                               │  create_authorization_bc
                                                               │  add_to_client_plan_… ──append──► client/plan.yml
                                                               └─────────────────────────────────► client loop
@@ -257,11 +271,11 @@ contract|server|client/
 
 | Файл | Кто наполняет | Содержимое |
 |------|---------------|------------|
-| `contract/plan.yml` | root handoff | план контракта (автономен) |
-| `server/plan.yml` | root handoff | code/BC slug’и **и** `add_to_client_plan_<client-slug>` |
+| `contract/plan.yml` | этап 10 (contract handoff) | план контракта (автономен) |
+| `server/plan.yml` | этап 11 после approve (`/handoff-server`) | code/BC slug’и **и** `add_to_client_plan_<client-slug>` |
 | `client/plan.yml` | только apply `add_to_client_plan_*` (server loop) | `<client-slug>`; на старте пуст |
 
-Пример `server/plan.yml` после handoff:
+Пример `server/plan.yml` **после этапа 11** (не после contract handoff):
 
 ```text
 create_authorization_bc
@@ -275,7 +289,7 @@ create_auth_ui
 ```
 
 **Нельзя** писать `create_auth_ui` напрямую в `server/plan.yml` — только как суффикс `add_to_client_plan_…`.
-
+**Нельзя** заполнять `server/plan.yml` до явного approve контракта.
 ### `add_to_client_plan_*` (server → client)
 
 - Полноценный OpenSpec-change в **server** openspec (propose → apply → archive).
