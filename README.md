@@ -164,20 +164,57 @@ Alias: `@/…` (`withSlash: true`), как в Vite/tsconfig.
 
 Краткая «карта», чтобы быстро вспомнить, как устроен процесс.
 
-### Четыре OpenSpec-контура
+### Контуры
 
-| Контур | Агент | `projectPath` / cwd | OpenSpec |
-|--------|--------|---------------------|----------|
-| корень | **Cursor или Pi** | репо | `openspec/` + skills в `.cursor` (Cursor) и `.agents` (Pi) |
-| `contract/` | **только Pi** | `…/contract` | `contract/openspec/` |
-| `server/` | **только Pi** | `…/server` | `server/openspec/` |
-| `client/` | **только Pi** | `…/client` | `client/openspec/` |
+| Контур | Агент | cwd / `projectPath` | Что делает |
+|--------|--------|---------------------|------------|
+| **корень** | Cursor или Pi | репо | `/start` → `canon/`; handoff в пакетные `plan.yml` / `project.md`. **Без** OpenSpec |
+| `contract/` | **только Pi** | `…/contract` | OpenSpec + loop по `contract/plan.yml` |
+| `server/` | **только Pi** | `…/server` | OpenSpec + loop по `server/plan.yml` |
+| `client/` | **только Pi** | `…/client` | OpenSpec + loop по `client/plan.yml` |
 
-Loop (LangGraph в `.agents/loop`) на каждый запуск получает **один** `projectPath` и ждёт там:
-`project.md`, `plan.yml`, `openspec/config.yaml`, `AGENTS.md`.
+Loop (LangGraph в `.agents/loop`) на каждый запуск получает **один** `projectPath` = каталог пакета и ждёт там:
+`project.md`, `plan.yml`, `openspec/config.yaml`, `AGENTS.md`. Root-loop не используется.
+
+### Skills и команды (где что лежит)
+
+Цель: одинаковый смысл в Cursor и Pi, минимум дублей.
+
+```text
+.agents/skills/                 # SSOT всех skills (Cursor + Pi walk-up)
+  ddd-start/                    # протокол /start
+  openspec-*/                   # OpenSpec skills для Pi@package
+  domain-drawio-map/
+  context-map-drawio/
+  feature-sliced-design/
+
+.cursor/commands/start.md       # Cursor: slash /start → Read ddd-start
+.pi/prompts/start.md            # Pi root: slash /start → тот же skill
+
+contract|server|client/
+  openspec/                     # контур OpenSpec пакета
+  .pi/prompts/opsx-*.md         # Pi slash /opsx-* (только при cwd=пакет)
+```
+
+**Нет:** корневого `openspec/`, `.cursor/skills/`, `.pi/skills/`, `*/.pi/skills/` (skills только в `.agents`).
+
+| Роль | Cursor | Pi |
+|------|--------|-----|
+| Strategic Design | `/start` в корне | `/start` в корне |
+| Handoff | чат в корне по `AGENTS.md` | то же |
+| OpenSpec propose/apply/… | — (не в корне) | cwd пакета + `/opsx-*`; skills из `.agents` (walk-up) |
+
+Неизбежный дубль платформ: только пара launcher’ов `/start` (Cursor command ≠ Pi prompt). Протокол один — `ddd-start`.
+
+Тройной `opsx-*` в `contract|server|client/.pi/prompts` остаётся: Pi не читает prompts из `.agents`, loop идёт с cwd пакета.
 
 ### Pipeline
 
+0. **`/start`** (Cursor или Pi в корне) — Strategic Design → `canon/`:
+   - команда: `.cursor/commands/start.md` / `.pi/prompts/start.md`;
+   - протокол: skill `ddd-start` (`.agents/skills/ddd-start/SKILL.md`);
+   - этапы 1–9 confirm-gated (intent → context → event storming → BC → model → rules → use cases → architecture);
+   - этап 10 handoff — **отдельный** confirm; до него `*/plan.yml` не трогать.
 1. **Root handoff** (Cursor или Pi в корне) — только подготовка планов, без кода фич:
    - заполняет `contract/plan.yml`;
    - заполняет `server/plan.yml` **с учётом готовности эндпоинтов**: code/BC slug’и и
@@ -189,13 +226,13 @@ Loop (LangGraph в `.agents/loop`) на каждый запуск получае
 3. **loop@server** — исполняет `server/plan.yml` по порядку; **не** invent’ит client-очередь.
    Change `add_to_client_plan_<client-slug>` → append `<client-slug>` в `client/plan.yml`.
 4. **loop@client** — стартует, когда в `client/plan.yml` есть ≥1 slug; если план кончился раньше новых append — loop останавливается, оператор **рестартит**.
-5. **Hotfix** — Pi с cwd в нужном пакете + локальный openspec.
+5. **Hotfix** — Pi с cwd в нужном пакете + `/opsx-*` + локальный `openspec/`.
 
 ```text
-Root (Cursor|Pi) → contract loop → server loop
-                                      │  create_authorization_bc
-                                      │  add_to_client_plan_create_auth_ui  ──append──► client/plan.yml
-                                      └───────────────────────────────────────────────► client loop
+/start → canon/* ──confirm──► Root handoff → contract loop → server loop
+                                                              │  create_authorization_bc
+                                                              │  add_to_client_plan_… ──append──► client/plan.yml
+                                                              └─────────────────────────────────► client loop
 ```
 
 ### Что в каком `plan.yml`
@@ -205,7 +242,6 @@ Root (Cursor|Pi) → contract loop → server loop
 | `contract/plan.yml` | root handoff | план контракта (автономен) |
 | `server/plan.yml` | root handoff | code/BC slug’и **и** `add_to_client_plan_<client-slug>` |
 | `client/plan.yml` | только apply `add_to_client_plan_*` (server loop) | `<client-slug>`; на старте пуст |
-| корневой `plan.yml` | обычно пуст | required-files; root-loop не обязателен |
 
 Пример `server/plan.yml` после handoff:
 
@@ -243,15 +279,6 @@ npm run cli -- "D:/projects/ddd_strong_contract_agent_loop_starter/client"
 ```
 
 Или Studio: `npm run dev` в `.agents/loop`, input `{ "projectPath": "<abs>" }`.
-
-### Skills
-
-| Где | Для кого |
-|-----|----------|
-| `.cursor/skills/openspec-*`, `.cursor/commands/opsx-*` | Cursor @ root |
-| `.agents/skills/openspec-*` | Pi (walk-up из пакетов и корня) |
-| `.agents/skills/domain-drawio-map`, `context-map-drawio` | Pi @ server (карты `.dio`) |
-| `.agents/skills/feature-sliced-design` | Pi @ client |
 
 ### Check
 

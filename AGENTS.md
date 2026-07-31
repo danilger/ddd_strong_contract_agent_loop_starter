@@ -8,14 +8,23 @@ Monorepo: contract-first, тактические DDD + CQRS.
 - `@repo/contract` — единая HTTP-граница client ↔ server.
 - После изменений в пакете: `npm run check` **из cwd этого пакета** (`server/` / `client/` / …).
 
-## Root agent (Cursor или Pi) — только handoff
+## Root agent (Cursor или Pi) — `/start` затем handoff
 
 Корневой агент **не** реализует фичи в `contract|server|client/src`.
 
-По задаче он:
+### Strategic Design — `/start`
 
-1. Убеждается, что в корне и в каждом пакете есть loop-required файлы:
+Перед handoff (новая идея / домен): команда `/start` (Cursor: `.cursor/commands/start.md`; Pi: `.pi/prompts/start.md`). Протокол — skill `ddd-start` (SSOT: `.agents/skills/ddd-start/SKILL.md`).
+
+Этапы confirm-gated пишут только `canon/` (`01_intent` … `08_architecture`, `PROGRESS.md`). Event storming: рекомендации в чате, `.dio` заполняет пользователь; accept | iterate на каждом ревью. До отдельного confirm этапа 10 **не** трогать пакетные `plan.yml` / `project.md`.
+
+### Handoff
+
+После согласованного `canon/` (или если canon уже есть) по задаче агент:
+
+1. Убеждается, что в **каждом пакете** (`contract|server|client`) есть loop-required файлы:
    `project.md`, `plan.yml`, `openspec/config.yaml`, `AGENTS.md`.
+   В корне OpenSpec **нет** — root только `/start` + handoff.
 2. Заполняет `contract/plan.yml` slug’ами `*-contract` (или иными согласованными именами).
 3. Заполняет `server/plan.yml` **порядком работы server**, включая моменты выдачи UI:
    - code/BC slug’и (например `create_authorization_bc`);
@@ -29,8 +38,7 @@ Monorepo: contract-first, тактические DDD + CQRS.
    Пример: [`server/project.md`](server/project.md) ← детали приложения;
    [`server/AGENTS.md`](server/AGENTS.md) ← DDD/CQRS/loop.
 
-OpenSpec в корне: Cursor — `.cursor/skills` + `.cursor/commands`; Pi — `.agents/skills`
-(walk-up). Пакетные loop — **только Pi**.
+Skills и slash: SSOT skills — `.agents/skills/` (Cursor и Pi). Root-команды — `.cursor/commands/start.md` и `.pi/prompts/start.md`. OpenSpec slash (`/opsx-*`) — только в `*/.pi/prompts` при cwd пакета. Пакетные loop — **только Pi**.
 
 Полный операторский процесс: `README.md` § «Агенты, OpenSpec и loop».
 
