@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+*.log
+.DS_Store
+.langgraph_api/
+.cursor/.graph-sync-needed
+.cursor/.graph-sync-lock
+.cursor/.graph-ir.json
+.cursor/.graph-ir-check.json

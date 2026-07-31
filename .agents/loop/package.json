@@ -1,0 +1,25 @@
+{
+  "name": "loop2",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cli": "tsx src/cli.ts",
+    "dev": "npx @langchain/langgraph-cli dev --port 2025",
+    "dev:log": "cross-env PI_VERBOSE=1 npx @langchain/langgraph-cli dev --port 2025",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "^0.81.1",
+    "@langchain/core": "^1.2.3",
+    "@langchain/langgraph": "^1.4.8",
+    "dotenv": "^16.6.1"
+  },
+  "devDependencies": {
+    "@langchain/langgraph-cli": "^1.1.2",
+    "@types/node": "^22.15.30",
+    "cross-env": "^7.0.3",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}

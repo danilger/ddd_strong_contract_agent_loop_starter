@@ -1,0 +1,180 @@
+<mxfile host="65bd71144e">
+    <diagram id="wApMYIIYQgkEvAGbGwM8" name="LangGraph">
+        <mxGraphModel dx="2065" dy="1295" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;START&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\graph.ts:1" id="n2">
+                    <mxCell style="rhombus;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="-74" y="42" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;END&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\graph.ts:1" id="n3">
+                    <mxCell style="rhombus;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="1379" y="59" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;check_files&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\checkRequiredFiles.ts:5" id="n4">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="122" y="44" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;check_active&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\checkActiveChanges.ts:4" id="n5">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="403" y="44" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;pick_active&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\selectActiveChange.ts:4" id="n6">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="617" y="-58" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;select_next&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\selectNextFromPlan.ts:4" id="n7">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="621" y="145" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;propose&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\runPropose.ts:5" id="n8">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="1033" y="-31" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;apply&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\runApply.ts:5" id="n9">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="1031" y="36" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;sync&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\runSync.ts:5" id="n10">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="1033" y="100" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;archive&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\runArchive.ts:5" id="n11">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="1031" y="171" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;missing_files&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\messages.ts:3" id="n12">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="772" y="-312" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;done&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\messages.ts:17" id="n13">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="969" y="361" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;font-weight: bold;&quot;&gt;report_error&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\loop2\src\nodes\messages.ts:24" id="n14">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=default;fontColor=#009900;" parent="1" vertex="1">
+                        <mxGeometry x="772" y="-238" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="" link="cursor://file/D:\projects\loop2\src\graph.ts:34" id="e1">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n2" target="n4" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="check_active" link="cursor://file/D:\projects\loop2\src\graph.ts:36" id="e2">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n4" target="n5" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="missing_files" link="cursor://file/D:\projects\loop2\src\graph.ts:37" id="e3">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n4" target="n12" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="error" link="cursor://file/D:\projects\loop2\src\graph.ts:38" id="e4">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n4" target="n14" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="pick_active" link="cursor://file/D:\projects\loop2\src\graph.ts:41" id="e5">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n5" target="n6" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="select_next" link="cursor://file/D:\projects\loop2\src\graph.ts:42" id="e6">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n5" target="n7" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="apply" link="cursor://file/D:\projects\loop2\src\graph.ts:45" id="e7">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n6" target="n9" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="error" link="cursor://file/D:\projects\loop2\src\graph.ts:46" id="e8">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n6" target="n14" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="propose" link="cursor://file/D:\projects\loop2\src\graph.ts:49" id="e9">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n7" target="n8" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="done" link="cursor://file/D:\projects\loop2\src\graph.ts:50" id="e10">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n7" target="n13" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="check_active" link="cursor://file/D:\projects\loop2\src\graph.ts:53" id="e11">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n8" target="n5" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="error" link="cursor://file/D:\projects\loop2\src\graph.ts:54" id="e12">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n8" target="n14" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="sync" link="cursor://file/D:\projects\loop2\src\graph.ts:57" id="e13">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n9" target="n10" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="error" link="cursor://file/D:\projects\loop2\src\graph.ts:58" id="e14">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n9" target="n14" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="archive" link="cursor://file/D:\projects\loop2\src\graph.ts:61" id="e15">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n10" target="n11" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="error" link="cursor://file/D:\projects\loop2\src\graph.ts:62" id="e16">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n10" target="n14" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="check_active" link="cursor://file/D:\projects\loop2\src\graph.ts:65" id="e22">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n11" target="n5" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="error" link="cursor://file/D:\projects\loop2\src\graph.ts:66" id="e18">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n11" target="n14" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="end" link="cursor://file/D:\projects\loop2\src\graph.ts:69" id="e19">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n12" target="n3" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="end" link="cursor://file/D:\projects\loop2\src\graph.ts:72" id="e20">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n13" target="n3" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="end" link="cursor://file/D:\projects\loop2\src\graph.ts:75" id="e21">
+                    <mxCell style="edgeStyle=entityRelationEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;fontColor=#009900;elbow=vertical;" parent="1" source="n14" target="n3" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

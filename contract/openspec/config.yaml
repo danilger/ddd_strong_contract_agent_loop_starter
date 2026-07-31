@@ -1,0 +1,19 @@
+schema: spec-driven
+
+context: |
+  Пакет @repo/contract — HTTP SSOT (Zod + ts-rest).
+  Агент: только Pi (cwd / projectPath = contract/).
+  План автономен от server/client plan.yml.
+  Язык: русский.
+
+rules:
+  specs:
+    - Формат Requirement + Scenario (WHEN/THEN)
+    - SHALL/MUST; язык требований: русский
+  proposal:
+    - "Обязательная секция ## Affected Files с ### Created и ### Modified"
+    - "Пути posix от корня репозитория (contract/src/...)"
+    - "Только contract/; без Nest/Drizzle/UI"
+  tasks:
+    - "После изменений: npm run build (из корня: npm run build:contract) или эквивалент пакета"
+    - "Slug naming: *-contract"

@@ -1,0 +1,41 @@
+<mxfile host="65bd71144e">
+    <diagram id="context-map" name="Context Map">
+        <mxGraphModel dx="2884" dy="2170" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="18" value="Context Map" style="swimlane;startSize=40;rounded=1;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=none;gradientDirection=south;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="-350" y="-550" width="1800" height="650" as="geometry"/>
+                </mxCell>
+                <UserObject label="account&lt;br&gt;" link="cursor://file/D:\projects\tutor2\server\src\account\docs\.dio" id="bc-account">
+                    <mxCell style="swimlane;startSize=40;rounded=1;strokeColor=#4D9900;fontSize=22;fontColor=#4D9900;gradientColor=none;gradientDirection=south;whiteSpace=wrap;html=1;align=center;" parent="18" vertex="1">
+                        <mxGeometry x="140" y="180" width="210" height="200" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="bc-account-listens" value="&lt;span style=&quot;color: rgb(77, 153, 0);&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Listens&lt;/b&gt;:&lt;br&gt;UserRegistered&lt;/font&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="bc-account" vertex="1">
+                    <mxGeometry x="10" y="50" width="170" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="bc-account-publishes" value="&lt;span style=&quot;color: rgb(77, 153, 0);&quot;&gt;&lt;b&gt;Publishes&lt;/b&gt;: &lt;br&gt;ActiveChildProfileChanged,&lt;br&gt;ChildProfileAdded,&lt;br&gt;ParentAccountCreated,&lt;br&gt;StudentModeEntered,&lt;br&gt;StudentModeExited&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="bc-account" vertex="1">
+                    <mxGeometry x="10" y="90" width="170" height="100" as="geometry"/>
+                </mxCell>
+                <UserObject label="auth&lt;br&gt;" link="cursor://file/D:\projects\tutor2\server\src\auth\docs\.dio" id="bc-auth">
+                    <mxCell style="swimlane;startSize=40;rounded=1;strokeColor=#4D9900;fontSize=22;fontColor=#4D9900;gradientColor=none;gradientDirection=south;whiteSpace=wrap;html=1;align=center;" parent="18" vertex="1">
+                        <mxGeometry x="1360" y="180" width="210" height="200" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="bc-auth-listens" value="&lt;span style=&quot;color: rgb(77, 153, 0);&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Listens&lt;/b&gt;:&lt;br&gt;ActiveChildProfileChanged,&lt;br&gt;StudentModeEntered,&lt;br&gt;StudentModeExited&lt;/font&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="bc-auth" vertex="1">
+                    <mxGeometry x="10" y="50" width="170" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="bc-auth-publishes" value="&lt;span style=&quot;color: rgb(77, 153, 0);&quot;&gt;&lt;b&gt;Publishes&lt;/b&gt;: &lt;br&gt;EmailConfirmed,&lt;br&gt;PasswordChanged,&lt;br&gt;UserRegistered&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="bc-auth" vertex="1">
+                    <mxGeometry x="10" y="120" width="170" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="100" value="ActiveChildProfileChanged, StudentModeEntered, StudentModeExited" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="18" source="bc-account-publishes" target="bc-auth-listens" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="101" value="UserRegistered" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="18" source="bc-auth-publishes" target="bc-account-listens" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

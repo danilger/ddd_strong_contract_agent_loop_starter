@@ -1,0 +1,35 @@
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test -c e2e/playwright.config.mjs",
+    "check": "npm run lint && npm run test && npm run build -w @repo/contract && npm run build -w server && npm run test:e2e",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@repo/contract": "*",
+    "@ts-rest/core": "^3.52.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@mandujs/oxlint-plugin-fsd": "^0.1.2",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "oxlint": "^1.75.0",
+    "typescript": "~5.7.3",
+    "vite": "^8.2.0",
+    "vitest": "^4.1.10"
+  }
+}

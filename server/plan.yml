@@ -1,0 +1,5 @@
+# filled by root Pi/Cursor under a task
+# Include code/BC slugs AND add_to_client_plan_<client-slug> in readiness order.
+# Example (do not leave active unless tasked):
+# create_authorization_bc
+# add_to_client_plan_create_auth_ui

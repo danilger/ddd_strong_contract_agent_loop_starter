@@ -1,0 +1,21 @@
+schema: spec-driven
+
+context: |
+  Пакет client — Vite React FSD v2.1, Playwright UI e2e.
+  Агент: только Pi (cwd / projectPath = client/).
+  plan.yml наполняется только apply server-change add_to_client_plan_* (append).
+  Этот агент plan.yml не пишет.
+  Язык: русский.
+
+rules:
+  specs:
+    - Формат Requirement + Scenario (WHEN/THEN)
+    - SHALL/MUST; язык требований: русский
+  proposal:
+    - "Обязательная секция ## Affected Files с ### Created и ### Modified"
+    - "Пути posix от корня репозитория"
+    - "Запрещены правки contract/src/**, server/**, client/plan.yml"
+    - "При client/src/** — e2e/ui/<bc-slug>/*.spec.ts и парный *-test-plan.md в Affected Files"
+  tasks:
+    - "npm run check из client/ должен быть зелёным"
+    - "Прогресс только через openspec/changes (active/archive), не через правки plan.yml"

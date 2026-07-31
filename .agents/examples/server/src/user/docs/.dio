@@ -1,0 +1,314 @@
+<mxfile host="65bd71144e">
+    <diagram id="Cp5L4b8D1_kuh_I2JsMD" name="Страница 1">
+        <mxGraphModel dx="3642" dy="2718" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="18" value="" style="swimlane;startSize=0;rounded=1;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=none;gradientDirection=south;" parent="1" vertex="1">
+                    <mxGeometry x="-1125" y="-533" width="2710" height="1950" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Application" style="swimlane;startSize=0;rounded=1;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;" parent="18" vertex="1">
+                    <mxGeometry x="108" y="650" width="1662" height="1180" as="geometry">
+                        <mxRectangle x="-370" width="180" height="40" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="9" value="Domain" style="swimlane;startSize=0;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;rounded=1;flipH=1;flipV=0;" parent="11" vertex="1">
+                    <mxGeometry x="46" y="532" width="874" height="497" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="Entities" style="swimlane;startSize=0;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;rounded=1;flipH=1;flipV=0;" parent="9" vertex="1">
+                    <mxGeometry x="28" y="55" width="315" height="153" as="geometry"/>
+                </mxCell>
+                <UserObject label="user.entity.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\domain\entities\user.entity.ts" id="35">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="32" vertex="1">
+                        <mxGeometry x="40" y="36" width="148" height="36" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="34" value="Value objects" style="swimlane;startSize=0;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;rounded=1;flipH=1;flipV=0;" parent="9" vertex="1">
+                    <mxGeometry x="403" y="55" width="315" height="207" as="geometry"/>
+                </mxCell>
+                <UserObject label="email.vo.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\domain\value-objects\email.vo.ts" id="36">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="34" vertex="1">
+                        <mxGeometry x="40" y="20" width="145" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="user-id.vo.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\domain\value-objects\user-id.vo.ts" id="39">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="34" vertex="1">
+                        <mxGeometry x="40" y="72" width="165" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="46" value="Events" style="swimlane;startSize=0;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;rounded=1;flipH=1;flipV=0;" parent="9" vertex="1">
+                    <mxGeometry x="28" y="280" width="690" height="153" as="geometry"/>
+                </mxCell>
+                <UserObject label="user-created.domain-event.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\domain\events\user-created.domain-event.ts" id="43">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="46" vertex="1">
+                        <mxGeometry x="40" y="10" width="340" height="36" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="user-deleted.domain-event.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\domain\events\user-deleted.domain-event.ts" id="45">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="46" vertex="1">
+                        <mxGeometry x="40" y="46" width="340" height="36" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="user-name-updated.domain-event.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\domain\events\user-name-updated.domain-event.ts" id="48">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="46" vertex="1">
+                        <mxGeometry x="40" y="82" width="380" height="36" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="22" value="Ports" style="swimlane;startSize=0;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;rounded=1;flipH=1;flipV=0;" parent="11" vertex="1">
+                    <mxGeometry x="39" y="77" width="340" height="155" as="geometry"/>
+                </mxCell>
+                <UserObject label="user.read.repository.port.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\ports\user.read.repository.port.ts" id="26">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="22" vertex="1">
+                        <mxGeometry x="13" y="20" width="310" height="41" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="user.write.repository.port.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\ports\user.write.repository.port.ts" id="25">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="22" vertex="1">
+                        <mxGeometry x="13" y="72" width="318" height="41" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="23" value="Commands / Queries / Event handlers" style="swimlane;startSize=0;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;rounded=1;flipH=1;flipV=0;" parent="11" vertex="1">
+                    <mxGeometry x="1050" y="72" width="560" height="855" as="geometry"/>
+                </mxCell>
+                <UserObject label="create-user.command.handler.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\commands\create-user.command.handler.ts" id="28">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="20" width="360" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="create-user.command.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\commands\create-user.command.ts" id="27">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="72" width="288" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="delete-user.command.handler.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\commands\delete-user.command.handler.ts" id="30">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="124" width="360" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="delete-user.command.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\commands\delete-user.command.ts" id="29">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="176" width="288" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="get-user.query.handler.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\queries\get-user.query.handler.ts" id="51">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="228" width="310" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="get-user.query.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\queries\get-user.query.ts" id="31">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="280" width="220" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="list-users.query.handler.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\queries\list-users.query.handler.ts" id="47">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="332" width="340" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="list-users.query.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\queries\list-users.query.ts" id="49">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="384" width="240" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="update-user.command.handler.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\commands\update-user.command.handler.ts" id="50">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="43" y="443" width="360" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="update-user.command.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\commands\update-user.command.ts" id="52">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="43" y="506" width="288" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="user-created.domain-event.handler.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\event-handlers\user-created.domain-event.handler.ts" id="33">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="593" width="400" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="user-deleted.domain-event.handler.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\event-handlers\user-deleted.domain-event.handler.ts" id="53">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="40" y="669" width="400" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="user-name-updated.domain-event.handler.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\application\event-handlers\user-name-updated.domain-event.handler.ts" id="54">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="23" vertex="1">
+                        <mxGeometry x="43" y="747" width="430" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="20" value="Presentation" style="swimlane;startSize=0;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;rounded=1;" parent="18" vertex="1">
+                    <mxGeometry x="90" y="50" width="520" height="280" as="geometry"/>
+                </mxCell>
+                <UserObject label="create-user-command.adapter.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\presentation\create-user-command.adapter.ts" id="42">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="20" vertex="1">
+                        <mxGeometry x="20" y="24" width="340" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="update-user-command.adapter.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\presentation\update-user-command.adapter.ts" id="55">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="20" vertex="1">
+                        <mxGeometry x="20" y="76" width="340" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="user-dto.adapter.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\presentation\user-dto.adapter.ts" id="44">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="20" vertex="1">
+                        <mxGeometry x="20" y="128" width="240" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="user.controller.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\presentation\user.controller.ts" id="37">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="20" vertex="1">
+                        <mxGeometry x="20" y="180" width="202" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="21" value="Infrastructure" style="swimlane;startSize=0;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;rounded=1;" parent="18" vertex="1">
+                    <mxGeometry x="2065" y="50" width="520" height="510" as="geometry"/>
+                </mxCell>
+                <UserObject label="drizzle-user.repository.adapter.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\infrastructure\adapters\drizzle-user.repository.adapter.ts" id="38">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="21" vertex="1">
+                        <mxGeometry x="20" y="24" width="388" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="in-memory-user.repository.adapter.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\server\src\user\infrastructure\adapters\in-memory-user.repository.adapter.ts" id="40">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="21" vertex="1">
+                        <mxGeometry x="20" y="88" width="400" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="19" value="Contract (@repo/contract)" style="swimlane;startSize=0;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=#E6E6E6;gradientDirection=south;rounded=1;" parent="18" vertex="1">
+                    <mxGeometry x="1895" y="717" width="646" height="510" as="geometry"/>
+                </mxCell>
+                <UserObject label="user.contract.ts" link="cursor://file/D:\projects\example_with_ddd_zod_strong_contract\contract\src\user.contract.ts" id="41">
+                    <mxCell style="text;whiteSpace=wrap;html=1;fontSize=25;fontColor=#4D9900;" parent="19" vertex="1">
+                        <mxGeometry x="20" y="24" width="183" height="52" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="60" value="UserCreatedDomainEvent" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="43" target="35" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" value="UserDeletedDomainEvent" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="45" target="35" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="UserNameUpdatedDomainEvent" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="48" target="35" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="Email" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="36" target="35" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" value="UserId" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="39" target="35" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="65" value="User" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="35" target="25" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="User" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="35" target="28" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="67" value="UserWriteRepositoryPort" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="25" target="28" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="68" value="CreateUserCommand" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="27" target="28" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="69" value="UserWriteRepositoryPort" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="25" target="30" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="DeleteUserCommand" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="29" target="30" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="71" value="User" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="35" target="50" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="UserWriteRepositoryPort" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="25" target="50" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="73" value="UpdateUserCommand" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="52" target="50" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="74" value="UserReadRepositoryPort" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="26" target="51" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" value="GetUserQuery" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="31" target="51" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="UserReadRepositoryPort" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="26" target="47" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="ListUsersQuery" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="49" target="47" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="78" value="UserCreatedDomainEvent" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="43" target="33" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="79" value="UserDeletedDomainEvent" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="45" target="53" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" value="UserNameUpdatedDomainEvent" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="48" target="54" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" value="CreateUserCommandAdapter" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="42" target="37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="82" value="UpdateUserCommandAdapter" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="55" target="37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="UserDtoAdapter" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="44" target="37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="84" value="DeleteUserCommand" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="29" target="37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="85" value="GetUserQuery" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="31" target="37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="86" value="ListUsersQuery" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="49" target="37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="87" value="UserReadModel" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="26" target="37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="88" value="CreateUserCommand" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="27" target="42" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="89" value="UpdateUserCommand" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="52" target="55" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="90" value="UserReadModel" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="26" target="44" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="91" value="User" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="35" target="44" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="92" value="UserReadRepositoryPort" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="26" target="38" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="93" value="UserWriteRepositoryPort" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="25" target="38" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="94" value="User" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="35" target="38" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="95" value="UserReadRepositoryPort" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="26" target="40" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="96" value="UserWriteRepositoryPort" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="25" target="40" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="97" value="User" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;" parent="1" source="35" target="40" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="98" value="userContract" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;dashed=1;dashPattern=8 8;" parent="1" source="41" target="37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="99" value="CreateUserDto" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;dashed=1;dashPattern=8 8;" parent="1" source="41" target="42" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="100" value="UpdateUserDto" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;dashed=1;dashPattern=8 8;" parent="1" source="41" target="55" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="101" value="UserDto" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;dashed=1;dashPattern=8 8;" parent="1" source="41" target="44" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="102" value="UserSchema" style="edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;strokeColor=#4D4D4D;fontColor=#4D4D4D;labelBackgroundColor=none;endArrow=classic;endFill=1;curved=1;dashed=1;dashPattern=8 8;" parent="1" source="41" target="38" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

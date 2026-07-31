@@ -1,0 +1,2 @@
+# root handoff / no loop slugs by default
+# Root agent fills package plans under a task; this file stays empty for required-files.

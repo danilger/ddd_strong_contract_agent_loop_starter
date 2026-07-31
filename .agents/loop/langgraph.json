@@ -1,0 +1,8 @@
+{
+  "node_version": "20",
+  "dependencies": ["."],
+  "graphs": {
+    "openspec_loop": "./src/graph.ts:graph"
+  },
+  "env": ".env"
+}

@@ -1,0 +1,26 @@
+schema: spec-driven
+
+context: |
+  Пакет server — NestJS, DDD+CQRS, Playwright API e2e.
+  Агент: только Pi (cwd / projectPath = server/).
+  Не менять contract/src. Client-очередь планирует root в server/plan.yml:
+  после BC-change идёт slug add_to_client_plan_<client-slug> — полноценный
+  OpenSpec-change, apply которого append-only дописывает <client-slug> в
+  ../client/plan.yml. Server не invent'ит моменты выдачи UI сам.
+  Язык: русский.
+
+rules:
+  specs:
+    - Формат Requirement + Scenario (WHEN/THEN)
+    - SHALL/MUST; язык требований: русский
+  proposal:
+    - "Обязательная секция ## Affected Files с ### Created и ### Modified"
+    - "Пути posix от корня репозитория"
+    - "Запрещены правки contract/src/**, client/src/**, client/openspec/**"
+    - "При server/src/** — e2e/api/<bc-slug>/*.spec.ts и парный *-test-plan.md в Affected Files"
+    - "Change add_to_client_plan_* : Affected Files только client/plan.yml (append); без client/src"
+  tasks:
+    - "npm run check из server/ должен быть зелёным (для code/BC changes)"
+    - "После BC: npm run docs:domain-map -- <slug>; npm run docs:context-map -- --context <slug>"
+    - "add_to_client_plan_<client-slug>: единственное действие apply — append одной строки <client-slug> в конец ../client/plan.yml"
+    - "Не overwrite client/plan.yml; не трогать уже существующие строки; не invent'ить append вне slug add_to_client_plan_*"

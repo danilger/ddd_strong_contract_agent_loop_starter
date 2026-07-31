@@ -1,0 +1,22 @@
+schema: spec-driven
+
+context: |
+  Корневой контур monorepo starter (contract / server / client).
+  Агент: Cursor или Pi. Роль — только handoff: заполнить пакетные
+  project.md / plan.yml (и при необходимости openspec/config.yaml).
+  Код в contract|server|client/src из корня не писать.
+  Язык: русский.
+
+rules:
+  specs:
+    - Формат Requirement + Scenario (WHEN/THEN)
+    - SHALL/MUST; язык требований: русский
+  proposal:
+    - "Обязательная секция ## Affected Files с ### Created и ### Modified"
+    - "Пути posix от корня репозитория; один bullet = один файл"
+    - "Root-change не должен менять contract/src, server/src, client/src"
+  tasks:
+    - "Handoff: contract/plan.yml; server/plan.yml (code slugs + add_to_client_plan_<client-slug>); client/plan.yml без slug"
+    - "server/plan.yml: не писать client-slug напрямую — только add_to_client_plan_*"
+    - "Убедиться что project.md / plan.yml / openspec/config.yaml / AGENTS.md есть в каждом контуре"
+    - "Заполнить пакетные project.md продуктовым контекстом"

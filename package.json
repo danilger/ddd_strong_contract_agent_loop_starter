@@ -1,0 +1,21 @@
+{
+  "name": "ddd-strong-contract-agent-loop-starter",
+  "private": true,
+  "workspaces": [
+    "contract",
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "build:contract": "npm run build -w @repo/contract",
+    "dev:server": "npm run start:dev -w server",
+    "build:server": "npm run build:contract && npm run build -w server",
+    "dev:client": "npm run dev -w client",
+    "build:client": "npm run build:contract && npm run build -w client"
+  },
+  "overrides": {
+    "zod": "^3.23.8",
+    "@ts-rest/core": "^3.52.1",
+    "@ts-rest/nest": "^3.52.1"
+  }
+}
