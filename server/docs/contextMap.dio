@@ -1,0 +1,24 @@
+<mxfile host="65bd71144e">
+    <diagram id="context-map" name="Context Map">
+        <mxGraphModel dx="2884" dy="2170" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="18" value="Context Map" style="swimlane;startSize=40;rounded=1;strokeColor=#4D9900;fontSize=25;fontColor=#4D9900;gradientColor=none;gradientDirection=south;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="-350" y="-550" width="1800" height="650" as="geometry"/>
+                </mxCell>
+                <UserObject label="auth&lt;br&gt;" link="cursor://file/D:\projects\ddd_strong_contract_agent_loop_starter\server\src\auth\docs\.dio" id="bc-auth">
+                    <mxCell style="swimlane;startSize=40;rounded=1;strokeColor=#4D9900;fontSize=22;fontColor=#4D9900;gradientColor=none;gradientDirection=south;whiteSpace=wrap;html=1;align=center;" parent="18" vertex="1">
+                        <mxGeometry x="140" y="180" width="210" height="200" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="bc-auth-listens" value="&lt;span style=&quot;color: rgb(77, 153, 0);&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;b&gt;Listens&lt;/b&gt;:&lt;br&gt;&lt;/font&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="bc-auth" vertex="1">
+                    <mxGeometry x="10" y="50" width="170" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="bc-auth-publishes" value="&lt;span style=&quot;color: rgb(77, 153, 0);&quot;&gt;&lt;b&gt;Publishes&lt;/b&gt;: &lt;br&gt;UserRegistered&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="bc-auth" vertex="1">
+                    <mxGeometry x="10" y="80" width="170" height="70" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test -c e2e/playwright.config.mjs",
+    "docs:component-tree": "node ../.agents/skills/react-component-diagram/scripts/generate-component-tree.mjs",
     "check": "npm run lint && npm run test && npm run build -w @repo/contract && npm run build -w server && npm run test:e2e",
     "preview": "vite preview"
   },

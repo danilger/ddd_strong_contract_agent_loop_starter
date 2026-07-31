@@ -18,4 +18,6 @@ rules:
     - "При client/src/** — e2e/ui/<bc-slug>/*.spec.ts и парный *-test-plan.md в Affected Files"
   tasks:
     - "npm run check из client/ должен быть зелёным"
+    - "После правок client/src/** с UI-компонентами: npm run docs:component-tree (без вопросов пользователю)"
+    - "При изменении дерева компонентов — client/docs/component-tree.dio в Affected Files"
     - "Прогресс только через openspec/changes (active/archive), не через правки plan.yml"

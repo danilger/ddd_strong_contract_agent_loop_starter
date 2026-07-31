@@ -1,0 +1,23 @@
+<mxfile host="65bd71144e">
+    <diagram id="CTms98fc1e" name="Component Tree">
+        <mxGraphModel dx="455" dy="1129" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <UserObject label="&lt;div style=&quot;color: rgb(228, 228, 228); background-color: rgb(24, 24, 24); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;color: #efb080;font-weight: bold;&quot;&gt;App&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\ddd_strong_contract_agent_loop_starter\client\src\app\App.tsx" id="2">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                        <mxGeometry x="505" y="20" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="&lt;div style=&quot;color: rgb(228, 228, 228); background-color: rgb(24, 24, 24); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px;&quot;&gt;&lt;span style=&quot;color: #efb080;font-weight: bold;&quot;&gt;AuthPage&lt;/span&gt;&lt;/div&gt;" link="cursor://file/D:\projects\ddd_strong_contract_agent_loop_starter\client\src\pages\auth\ui\AuthPage.tsx" id="3">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                        <mxGeometry x="505" y="120" width="140" height="50" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="2" target="3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

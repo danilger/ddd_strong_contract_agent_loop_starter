@@ -28,14 +28,14 @@ npm install <pkg> -w @repo/contract   # или -w server / -w client
 npm install <pkg> -w server -w client # сразу в несколько
 ```
 
-Проверка одной версии:
+Проверка одной версии (то же в корневом `npm run check`):
 
 ```bash
-npm ls zod
-npm ls @ts-rest/core @ts-rest/nest
+npm run check:deps
+# эквивалент: npm ls zod @ts-rest/core @ts-rest/nest
 ```
 
-Ожидание: одна физическая версия, у соседей `deduped`.
+Ожидание: одна физическая версия, у соседей `deduped`. При дублях `npm ls` падает с ненулевым кодом.
 
 ---
 
@@ -204,6 +204,7 @@ Loop (LangGraph в `.agents/loop`) на каждый запуск получае
   domain-drawio-map/
   context-map-drawio/
   feature-sliced-design/
+  react-component-diagram/      # client: npm run docs:component-tree
 
 .cursor/commands/start.md       # Cursor: slash /start → Read ddd-start
 .pi/prompts/start.md            # Pi root: slash /start → тот же skill
@@ -299,7 +300,16 @@ npm run cli -- "D:/projects/ddd_strong_contract_agent_loop_starter/client"
 
 ### Check
 
-После кода в пакете — из **этого** пакета: `npm run check` (lint + unit + e2e).  
+Из **корня** (deps + server + client):
+
+```bash
+npm run check
+# = check:deps (zod / @ts-rest/*) → check -w server → check -w client
+```
+
+Только dedupe shared-пакетов: `npm run check:deps`.
+
+После кода в одном пакете — из **этого** пакета: `npm run check` (lint + unit + e2e).  
 Server docs: `npm run docs:domain-map -- <slug>`, `npm run docs:context-map -- --context <slug>` (см. `server/AGENTS.md`).
 
 ---

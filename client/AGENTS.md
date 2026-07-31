@@ -91,6 +91,19 @@ import { Y } from "@/features/b";        // features → features
 - **Запрещено** писать в `plan.yml`, `contract/src/**`, `server/**`.
 - Прогресс = `openspec/changes` (active/archive). Если plan опустел — loop стоп; после новых строк — рестарт.
 
+## Component tree (draw.io)
+
+После **создания или изменения** project React-компонентов в `src/` — актуализировать дерево (cwd = `client/`):
+
+```bash
+npm run docs:component-tree
+```
+
+- Output: `docs/component-tree.dio` (root = `src/app/App.tsx`).
+- Skill: `.agents/skills/react-component-diagram` (`/skill:react-component-diagram`).
+- **Запрещено** спрашивать пользователя root/path/mode или ждать confirm — только скрипт с defaults.
+- Устаревшее дерево после UI-изменений — незавершённая работа.
+
 ## Enforcement
 
 - После client-изменений: `npm run check` (из `client/`).
@@ -105,4 +118,5 @@ import { Y } from "@/features/b";        // features → features
 5. i18n-ключи на пользовательских строках?
 6. Обработаны статусы ошибок контракта (404, 409, …)?
 7. `plan.yml` не редактировался этим агентом?
-8. `npm run check` зелёный?
+8. `docs/component-tree.dio` обновлён (`npm run docs:component-tree`), если менялись UI-компоненты?
+9. `npm run check` зелёный?
