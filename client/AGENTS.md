@@ -88,8 +88,9 @@ import { Y } from "@/features/b";        // features → features
 
 - Агент: **только Pi** (loop `projectPath` = `client/`).
 - `plan.yml` на старте пуст; наполняется **только** через server-change `add_to_client_plan_*` (append),
-  после **server-handoff** (этап 11) и apply соответствующих server changes — не раньше.
-- **Запрещено** писать в `plan.yml`, `contract/src/**`, `server/**`.
+  после **server-handoff** (этап 14) и apply соответствующих server changes — не раньше.
+- **Запрещено** писать в `plan.yml`, `contract/**`, `server/**`.
+  Tool-lock loop отказывает write/edit/bash в `../contract/` (как readonly `plan.yml`).
 - Прогресс = `openspec/changes` (active/archive). Если plan опустел — loop стоп; после новых строк — рестарт.
 
 ## Component tree (draw.io)

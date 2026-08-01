@@ -14,7 +14,7 @@ rules:
   proposal:
     - "Обязательная секция ## Affected Files с ### Created и ### Modified"
     - "Пути posix от корня репозитория"
-    - "Запрещены правки contract/src/**, server/**, client/plan.yml"
+    - "Запрещены правки contract/**, server/**, client/plan.yml (loop tool-lock на ../contract/)"
     - "При client/src/** — e2e/ui/<bc-slug>/*.spec.ts и парный *-test-plan.md в Affected Files"
   tasks:
     - "npm run check из client/ должен быть зелёным"

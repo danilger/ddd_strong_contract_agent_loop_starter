@@ -19,6 +19,21 @@ contract (Zod + ts-rest)  →  presentation adapters  →  commands/queries  →
 Контракт **не заменяет** domain: DTO ≠ Aggregate, DTO ≠ Command.
 Сервер маппит DTO → Command в `presentation/*-command.adapter.ts`.
 
+## Раскладка папок (= BC)
+
+```text
+contract/src/
+  shared/              # только cross-BC схемы (ErrorSchema, pagination) — НЕ BC
+  health/              # platform surface (исключение, зеркало server/src/health/)
+  <bc_slug>/           # 1:1 с server/src/<bc_slug>/ и canon/04_bounded_contexts.md
+    <bc_slug>.contract.ts
+    <bc_slug>.schemas.ts   # optional
+```
+
+- Имя папки BC = тот же slug, что на server и в canon.
+- Один BC — одна папка; несколько роутеров BC — файлы внутри неё, не соседние папки.
+- Business endpoints **не** класть в `shared/`.
+
 ## Назначение
 
 - HTTP: методы, path, body, params, responses, `strictStatusCodes: true`.
@@ -27,8 +42,8 @@ contract (Zod + ts-rest)  →  presentation adapters  →  commands/queries  →
 
 ## Что можно
 
-- Новые роутеры в `contract/src/<домен>/<slug>.contract.ts` и подключение в `apiContract`.
-- Общие схемы (`ErrorSchema`) — переиспользовать, не дублировать.
+- Новые роутеры в `contract/src/<bc_slug>/<bc_slug>.contract.ts` и подключение в `apiContract`.
+- Общие схемы (`ErrorSchema`) — в `shared/`, не дублировать.
 - Явные коды ответов со схемами для каждого статуса.
 
 ## Запрещено
@@ -47,16 +62,17 @@ contract (Zod + ts-rest)  →  presentation adapters  →  commands/queries  →
 
 - Агент в этом каталоге: **только Pi** (и loop с `projectPath` = `contract/`).
 - `plan.yml` автономен: slug’и `*-contract`, без зависимости от server/client plans.
-  Наполняет root на **этапе 10 (contract handoff)**; `server/plan.yml` на этой фазе не пишется.
-- Sole writer: `contract/src/**`. Не править `server/` / `client/` из этого контура.
-- После contract loop: human review → **явный approve** оператора («контракт принят»).
-  Только после approve root заполняет `server/plan.yml` (`/handoff-server`, этап 11).
+  Наполняет root на **этапе 11 (contract_handoff)**; `server/plan.yml` на этой фазе не пишется.
+- **Writers `contract/**`:** contract loop; root на **этапе 13** (`review_contract`) для правок после review.
+  Server/client loops жёстко заблокированы tool-lock’ом на `../contract/`.
+  Не править `server/` / `client/` из этого контура.
+- После contract loop: этап 13 — review; **`/next` = approve**. Затем этап 14 заполняет `server/plan.yml`.
 
 ## Новый bounded context
 
-1. `contract/src/<bc_slug>/<slug>.contract.ts` (папка = BC; `shared/` — общие схемы)
+1. `contract/src/<bc_slug>/<bc_slug>.contract.ts` (+ schemas при необходимости)
 2. Экспорт в `contract/src/index.ts` → `apiContract`
-3. Только после этого — backend по правилам корневого `AGENTS.md` и `server/AGENTS.md`
+3. Только после approve контракта — backend в `server/src/<bc_slug>/` по `server/AGENTS.md`
 
 ## Enforcement
 
@@ -68,6 +84,7 @@ contract (Zod + ts-rest)  →  presentation adapters  →  commands/queries  →
 ## Чеклист
 
 1. ts-rest router + Zod + все статусы ответов?
-2. Экспорт из `index.ts`?
-3. Сборка контракта после изменений зелёная?
-4. Server: DTO только в presentation/infrastructure, не в application handlers?
+2. Папка = BC slug (или `shared` / `health`)?
+3. Экспорт из `index.ts`?
+4. Сборка контракта после изменений зелёная?
+5. Server: DTO только в presentation/infrastructure, не в application handlers?

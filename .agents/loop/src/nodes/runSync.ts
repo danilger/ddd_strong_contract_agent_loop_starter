@@ -14,7 +14,7 @@ export async function runSync(
     const result = await runPi({
       projectPath: state.projectPath,
       role: "code",
-      prompt: syncPrompt(changeName),
+      prompt: syncPrompt(changeName, state.projectPath),
     });
 
     if (result.exitCode !== 0) {

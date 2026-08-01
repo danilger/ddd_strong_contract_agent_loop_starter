@@ -1,235 +1,268 @@
 ---
 name: ddd-start
 description: >-
-  Conduct confirm-gated DDD strategic planning from a business idea into canon/
-  artifacts (intent, context, event storming, BCs, domain model, rules, use cases,
-  architecture), then two-phase root handoff: contract plan first, server plan only
-  after user approves the finished contract. Use when the user runs /start,
-  /handoff-server, asks to start DDD planning, or resume canon planning.
+  Root delivery protocol via /start, /work, and /next: onboarding and bootstrap
+  (stages 0–1), confirm-gated DDD planning into canon/ (stages 2–10), then contract
+  handoff, loops, review, server/client through formal completion (stages 11–17).
+  Use when the user runs /start, /work, /next, or resumes delivery progress.
 ---
 
-# /start — DDD Strategic Planning → canon/
+# Root delivery — `/start` · `/work` · `/next`
 
-Goal: walk the user from a rough business idea to agreed architecture artifacts under `canon/`, then optionally run **two-phase** root handoff into package `plan.yml` / `project.md`.
+Goal: after cloning the starter, walk from environment setup through a business idea, `canon/`, and package loops to formal completion, driven by [`canon/PROGRESS.md`](../../../canon/PROGRESS.md).
 
-## First actions
+## Commands
+
+### `/start`
 
 1. Read `canon/PROGRESS.md` (create from template if missing).
-2. Announce current stage and whether this is resume or fresh start.
-3. If the user did not say «начать заново», continue from the first non-`done` stage.
-4. Work **one stage per turn**; stop at confirm / accept / waiting_user.
+2. If any stage is `in_progress` or `waiting_user` → **resume that stage** (do not pick a new `pending`).
+3. Else take the first `pending` → set `in_progress` → execute its logic.
+4. Arg «начать заново» only: reset stages to `pending` per user confirmation, then start stage **0**. Never reset without that phrase.
+5. One stage focus per turn; after work set `waiting_user` when awaiting the human; always end with **Command hints**.
 
-## Out of scope until handoff confirm
+### `/work`
 
-- Do **not** write feature code under `contract|server|client/src`.
-- Do **not** edit package OpenSpec changes or `*/plan.yml` / package `project.md` until the user explicitly confirms **Этап 10 (contract handoff)**.
-- Do **not** fill `server/plan.yml` until **Этап 11** after explicit contract approve (or `/handoff-server`).
-- Do **not** invent business rules the user did not state; ask instead.
+Scoped work on the **current** `in_progress` / `waiting_user` stage only.
+
+- Prefix `/work` is optional. In this delivery thread, any user message while a stage is active counts as `/work` (unless it is clearly `/start` or `/next`).
+- Apply feedback, answer questions, edit stage artifacts, run bootstrap commands, or help/spawn a package loop as the stage allows.
+- Do **not** advance `PROGRESS` to the next stage (that is `/next` only).
+- After the turn: keep or set `waiting_user`; print **Command hints**.
+
+### `/next`
+
+1. Identify the current `in_progress` or `waiting_user` stage.
+2. **Stage 16 gate** (required): before accepting `/next` from `run_client_and_wait`, verify:
+   - `server/plan.yml` and `client/plan.yml` have no remaining work slugs (blank lines and `#` comments ok);
+   - no active dirs under `server/openspec/changes/` or `client/openspec/changes/` (only `archive/` may hold past changes).
+   If the gate fails → refuse `/next`, stay `waiting_user`, list what remains.
+3. Mark current stage `done`.
+4. If a next `pending` exists → set it `in_progress` and **immediately execute** that stage in the same turn.
+5. If none remain → announce formal completion.
+6. End with **Command hints** (or completion message).
+
+### Command hints (every turn)
+
+Always end active-stage replies with something like:
+
+> Дальше: `/work <ответ или правка>` · `/next` (принять этап и перейти) · `/start` (resume, если контекст потерян)
+
+## Out of scope / invariants
+
+- Do **not** invent business rules the user did not state; ask via `/work` wait.
 - Point out contradictions between intent, context, event storming, and later artifacts.
-
-## Accept / iterate (anti-loop)
-
-After every review or proposal for stages 3–9, end with exactly two choices:
-
-1. **Принять как финальный** (mark stage `done` in `PROGRESS.md`, advance).
-2. **Ещё итерация** (stay on stage; apply feedback or wait for user edits).
-
-Never loop reviews without offering accept.
+- Until stage **11**: do not edit package `plan.yml` / `project.md` or feature `src` (except reading). Bootstrap (stage 1) may touch env files and run installs only.
+- Until stage **14**: do not fill `server/plan.yml` with work slugs.
+- `contract/src`: writable by **contract loop**, and by **root only during stage 13**. Server/client loops stay tool-locked out of `contract/`.
+- Root still does not implement server/client feature code in stages 0–17 (loops do); stage 13 may patch `contract/src` only.
 
 ## PROGRESS.md
 
-Keep statuses: `pending | in_progress | waiting_user | done`.
+Statuses: `pending | in_progress | waiting_user | done`.
 
-Update after every stage transition. Stages:
+Update after every transition. Stages:
 
-| # | id | Artifact |
-|---|-----|----------|
-| 1 | intent | `canon/01_intent.md` |
-| 2 | context | `canon/02_context/context.md` |
-| 3 | event_storming | `canon/03_event_storming.dio` |
-| 4 | event_storming_analysis | (agreed flow; notes in PROGRESS) |
-| 5 | bounded_contexts | `canon/04_bounded_contexts.md` |
-| 6 | domain_model | `canon/05_domain_model.md` |
-| 7 | rules | `canon/06_rules.md` |
-| 8 | use_cases | `canon/07_use_cases.md` |
-| 9 | architecture | `canon/08_architecture.md` |
-| 10 | contract_handoff | `*/project.md` + `contract/plan.yml` only |
-| 11 | server_handoff | `server/plan.yml` after contract approve |
-
----
-
-## Этап 1: Intent
-
-Ask the user to describe the product idea in business terms (no stack, no frameworks).
-
-Tasks:
-
-- Strip technical details.
-- Capture system goal and primary business problem.
-- Ask clarifying questions; draft a short intent.
-
-Save only after explicit confirm → `canon/01_intent.md`. Mark stage `done`.
+| # | id | Artifact / outcome |
+|---|-----|-------------------|
+| 0 | onboarding | user understands command protocol + stage map |
+| 1 | bootstrap | deps installed; contract builds; loop deps optional-ready |
+| 2 | intent | `canon/01_intent.md` |
+| 3 | context | `canon/02_context/context.md` |
+| 4 | event_storming | `canon/03_event_storming.dio` |
+| 5 | event_storming_analysis | agreed flow; notes in PROGRESS |
+| 6 | bounded_contexts | `canon/04_bounded_contexts.md` |
+| 7 | domain_model | `canon/05_domain_model.md` |
+| 8 | rules | `canon/06_rules.md` |
+| 9 | use_cases | `canon/07_use_cases.md` |
+| 10 | architecture | `canon/08_architecture.md` |
+| 11 | contract_handoff | `*/project.md` + `contract/plan.yml` only |
+| 12 | run_contract_loop | contract loop running / instructed |
+| 13 | review_contract | `/next` = approve contract |
+| 14 | server_handoff | `server/plan.yml` filled |
+| 15 | run_server_loop | server loop running / instructed |
+| 16 | run_client_and_wait | client loop + both plans closed |
+| 17 | development_complete | formal end message |
 
 ---
 
-## Этап 2: Context
+## Этап 0: Onboarding
 
-Ask the user to add all project materials into `canon/02_context/` (docs, notes, exports). Wait until they say they are finished (e.g. «готово»).
+Give a **short** briefing (no walls of text):
 
-Then:
+1. Commands: `/start` resume, `/work` work on current stage, `/next` accept and advance.
+2. Map: 0–1 setup → 2–10 canon → 11–13 contract → 14–16 server/client → 17 done.
+3. Contract-first: HTTP only in `@repo/contract`; loops write package code; root orchestrates plans.
 
-- Read all files in that folder.
-- Align with `canon/01_intent.md`.
-- Remove noise and duplicates.
-- Write structured summary → `canon/02_context/context.md`.
-
-Confirm with user → mark `done`.
+Set `waiting_user`. `/next` = user understood. Do not run install yet.
 
 ---
 
-## Этап 3: Event Storming (user-owned `.dio`)
+## Этап 1: Bootstrap
 
-Sources: `01_intent.md`, `02_context/context.md`. File: `canon/03_event_storming.dio` (legend for Domain Event / Command / Actor / Policy is already in the file).
+Walk the user through clone setup (**not** `npm init` in packages). Checklist from repo root:
 
-1. In chat, propose starter lists: **Domain Events**, **Commands**, **Actors**, **Policies** (recommendations only).
-2. Ask the user to fill `03_event_storming.dio` themselves using the legend.
-3. Do **not** edit the `.dio` unless the user explicitly asks you to apply edits.
-4. Wait for «закончил» / «проверь» / equivalent.
-5. Review: wrong card types, missing steps, illogical transitions; give recommendations.
-6. Offer **принять файл как финальный** | **ещё итерация**.
+1. `npm install` (root only — do **not** npm install inside `contract|server|client` as the main path).
+2. Copy `server/.env.example` → `server/.env` if missing.
+3. `npm run build:contract`.
+4. `cd .agents/loop && npm install` (needed before loop stages; do now).
+5. Optional hint: `.agents/loop/.env.example` for model API keys — not a `/next` blocker.
+6. Smoke: `npm run check:deps` and/or successful `build:contract`.
 
-On accept → mark stage `done`.
+**Skip:** if root `node_modules` exists and `build:contract` / `check:deps` already succeed — say so and offer `/next`.
 
----
+On `/work запусти` (or equivalent): give commands and/or run in **background**; do **not** block the chat until install finishes. Verify afterward. Stay `waiting_user`.
 
-## Этап 4: Event Storming analysis
-
-Analyze `canon/03_event_storming.dio`:
-
-- Duplicates, process gaps, causal links, bad connections.
-
-Format: findings + fix suggestions. Iterate with accept/iterate until the user accepts the agreed event flow. Record brief agreement notes in `PROGRESS.md`. Mark `done`.
+`/next` when environment is ready.
 
 ---
 
-## Этап 5: Bounded Contexts
+## Этап 2: Intent
 
-Group events by meaning; propose BC boundaries; explain the split. User may correct. Accept/iterate.
+Ask for the product idea in business terms (no stack/frameworks). Strip tech noise; capture goal and primary problem; clarify; draft short intent.
 
-Save → `canon/04_bounded_contexts.md`. Mark `done`.
+Practical rule: produce/update `canon/01_intent.md` during the stage; `/next` marks done.
 
----
-
-## Этап 6: Domain model
-
-Per bounded context propose: Entities, Value Objects, Aggregates.
-
-Requirements: business meaning only — no frameworks, DBs, or API shapes.
-
-Accept/iterate → `canon/05_domain_model.md`. Mark `done`.
+Set `waiting_user`. Command hints.
 
 ---
 
-## Этап 7: Rules and invariants
+## Этап 3: Context
 
-Per Aggregate: invariants, business rules, where they live (in domain language).
+Ask the user (via `/work`) to put materials in `canon/02_context/`. When they say materials are ready:
 
-Accept/iterate → `canon/06_rules.md`. Mark `done`.
+- Read the folder; align with `01_intent.md`; dedupe; write `canon/02_context/context.md`.
 
----
-
-## Этап 8: Use cases
-
-Derive from Commands (event storming) + domain model.
-
-For each: inputs, steps, domain operations. Business language only.
-
-Accept/iterate → `canon/07_use_cases.md`. Mark `done`.
-
-Note: these are **canon** use cases; they are **not** Nest `*UseCase` classes.
+`waiting_user` → `/next` when summary accepted.
 
 ---
 
-## Этап 9: Architecture projection
+## Этап 4: Event Storming (user-owned `.dio`)
 
-Propose:
+Sources: intent + context. File: `canon/03_event_storming.dio`.
 
-- Module structure by BC.
-- Layers: domain / application / infrastructure (align with `server/AGENTS.md`).
-- Interaction contracts (toward `@repo/contract`).
-
-State explicitly: canon use cases map to **Commands/Queries** in code, not `*UseCase` classes.
-
-Accept/iterate → `canon/08_architecture.md`. Mark `done`.
-
-Optional mention of scaffolding a starter is informational only — do not generate package code here.
+1. Propose starter lists: Domain Events, Commands, Actors, Policies (chat only).
+2. User fills the `.dio` (legend already in file).
+3. Do **not** edit `.dio` unless user asks via `/work`.
+4. On request, review card types, gaps, transitions; recommend fixes.
+5. `/next` = accept file as final.
 
 ---
 
-## Этап 10: Contract handoff (separate confirm)
+## Этап 5: Event Storming analysis
 
-After stage 9 is `done`, ask:
-
-> Запустить **contract handoff** сейчас? (заполнить `*/project.md` и только `contract/plan.yml`; `server|client/plan.yml` без рабочих slug)
-
-### If no
-
-Set `contract_handoff` status to skipped / not requested in `PROGRESS.md`. Stop. Canon planning is complete. Do not run stage 11.
-
-### If yes
-
-Follow root [`AGENTS.md`](../../../AGENTS.md) **contract handoff** rules:
-
-1. Ensure loop-required files exist in each package (`contract|server|client`):
-   `project.md`, `plan.yml`, `openspec/config.yaml`, `AGENTS.md`.
-   Root has no OpenSpec contour.
-2. Fill package `project.md` files with product context distilled from `canon/` (domains, scenarios, constraints). Leave architecture rules in `*/AGENTS.md`.
-3. Fill **only** `contract/plan.yml` with contract slugs (e.g. `*-contract`).
-4. Leave `server/plan.yml` **without** work slugs (empty / only `#` comments). **Do not** invent server queue here.
-5. Leave `client/plan.yml` empty (no work slugs).
-6. Do **not** implement features in package `src`.
-
-Mark `contract_handoff` `done` in `PROGRESS.md`. Suggest next operator steps:
-
-1. Run **contract loop**.
-2. Human review of `contract/src`.
-3. Explicit approve («контракт принят» / equivalent).
-4. Then `/handoff-server` (этап 11).
+Analyze `03_event_storming.dio`: duplicates, gaps, causal links. Findings + fixes. Iterate with `/work`. Record brief agreement notes in PROGRESS. `/next` when flow agreed.
 
 ---
 
-## Этап 11: Server handoff (after contract approve)
+## Этап 6: Bounded Contexts
 
-Entry: `/handoff-server`, or resume `/start` when stage 10 is `done` and 11 is not.
+Propose BC boundaries from events; explain split. Save `canon/04_bounded_contexts.md`. `/work` to revise; `/next` to accept.
 
-**Preconditions (all required):**
+---
 
-1. Stage 10 `contract_handoff` is `done` (not skipped).
-2. User has **explicitly** approved the finished contract («контракт принят», «approve», «контракт ок», or equivalent in this chat). If not yet approved — ask for approve or stop; do **not** fill `server/plan.yml`.
-3. Prefer reading actual `contract/src/**` (routers, statuses, DTOs) plus `canon/` when drafting the server queue.
+## Этап 7: Domain model
 
-Ask (unless the user already confirmed server handoff in the same message as approve):
+Per BC: Entities, VOs, Aggregates — business meaning only (no DB/API). → `canon/05_domain_model.md`. `/next` to accept.
 
-> Заполнить `server/plan.yml` сейчас? (по готовому контракту + canon; `client/plan.yml` не трогать)
+---
 
-### If no
+## Этап 8: Rules and invariants
 
-Leave `server_handoff` pending / skipped as the user directs. Stop.
+Per Aggregate: invariants/rules in domain language. → `canon/06_rules.md`. `/next` to accept.
 
-### If yes
+---
 
-1. Optionally refresh `server/project.md` from canon + approved contract surfaces (still no edits to `contract/src`).
-2. Fill `server/plan.yml` with code/BC slugs **and** `add_to_client_plan_<client-slug>` entries (never raw client slugs as plan lines).
-3. Do **not** edit `client/plan.yml` or `contract/plan.yml` / `contract/src`.
-4. Do **not** implement features in package `src`.
+## Этап 9: Use cases
 
-Mark `server_handoff` `done` in `PROGRESS.md`. Suggest: run **server loop**, then **client loop** when `client/plan.yml` gets appends (see README).
+From Commands + domain model; business language; not Nest `*UseCase`. → `canon/07_use_cases.md`. `/next` to accept.
+
+---
+
+## Этап 10: Architecture projection
+
+Module-by-BC; layers per `server/AGENTS.md`; path toward `@repo/contract`. Canon use cases → Commands/Queries in code. → `canon/08_architecture.md`. `/next` to accept. No package feature code here.
+
+---
+
+## Этап 11: Contract handoff
+
+On execute (from `/start` or `/next`):
+
+1. Ensure each package has `project.md`, `plan.yml`, `openspec/config.yaml`, `AGENTS.md`.
+2. Fill `*/project.md` from `canon/`.
+3. Fill **only** `contract/plan.yml` (`*-contract` → `contract/src/<bc_slug>/`).
+4. Leave `server/plan.yml` and `client/plan.yml` without work slugs.
+5. No feature `src` implementation.
+
+Then `waiting_user`. Hints: `/next` → stage 12 (run contract loop).
+
+---
+
+## Этап 12: Run contract loop
+
+Explain how to run loop from `.agents/loop`:
+
+```bash
+cd .agents/loop
+npm run cli -- "<ABS>/contract"
+```
+
+On `/work запусти` (or equivalent): give the command and/or spawn CLI **in background**; **do not** wait for loop completion. Stay `waiting_user`.
+
+`/next` when user confirms contract loop finished (prefer wait until loop done before `/next`).
+
+---
+
+## Этап 13: Review contract
+
+User reviews `contract/src`.
+
+- `/work`: root **may edit** `contract/src` (stage-13-only exception) or advise re-running contract loop.
+- `/next` = **approve** the contract and advance to server handoff.
+
+---
+
+## Этап 14: Server handoff
+
+Using `canon/` + approved `contract/src/**`:
+
+1. Optionally refresh `server/project.md`.
+2. Fill `server/plan.yml` with BC/code slugs only for BCs present in contract, plus `add_to_client_plan_<client-slug>` (never raw client slugs).
+3. Do not edit `client/plan.yml` or `contract/**`.
+4. No feature `src` on server/client here.
+
+Then `waiting_user`; `/next` → stage 15.
+
+---
+
+## Этап 15: Run server loop
+
+Same pattern as stage 12 with `projectPath` = `…/server`. Background spawn ok; do not block. `waiting_user`; `/next` → stage 16 when server loop is underway or user ready to manage client.
+
+---
+
+## Этап 16: Run client and wait
+
+Inform the user:
+
+- Server loop appends to `client/plan.yml` via `add_to_client_plan_*`.
+- When `client/plan.yml` has ≥1 work slug, start client loop (help/`/work запусти` with `…/client`).
+- Client may **drain the plan and stop** while server still appends → **restart** client loop.
+- Stay on this stage until **both** server and client plans are closed.
+
+`/next` only if **stage 16 gate** passes (see Commands). Otherwise refuse.
+
+---
+
+## Этап 17: Development complete
+
+Executing this stage prints the completion notice and sets `waiting_user`; `/next` marks 17 `done` and states all stages complete.
+
+Tell the user: formal delivery process is finished. Further changes = hotpatch with Pi in `contract|server|client` (+ `/opsx-*`), not this root protocol.
 
 ---
 
 ## Completion
 
-- Stages **1–9** `done` → strategic planning complete (`canon/` artifacts exist).
-- Stage **10** applied → operator may run **contract loop**; `server/plan.yml` still empty of work slugs.
-- Stage **11** applied (after contract approve) → operator may run **server loop**; client still only via `add_to_client_plan_*` append.
-- Skipping stage 10 skips stage 11 as well.
+All stages **0–17** `done` → formal development process finished. Warn the user explicitly.

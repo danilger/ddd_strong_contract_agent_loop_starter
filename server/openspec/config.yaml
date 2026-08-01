@@ -3,7 +3,7 @@ schema: spec-driven
 context: |
   Пакет server — NestJS, DDD+CQRS, Playwright API e2e.
   Агент: только Pi (cwd / projectPath = server/).
-  Не менять contract/src. Client-очередь планирует root в server/plan.yml:
+  Не менять contract/** (tool-lock). Client-очередь планирует root в server/plan.yml:
   после BC-change идёт slug add_to_client_plan_<client-slug> — полноценный
   OpenSpec-change, apply которого append-only дописывает <client-slug> в
   ../client/plan.yml. Server не invent'ит моменты выдачи UI сам.
@@ -16,7 +16,7 @@ rules:
   proposal:
     - "Обязательная секция ## Affected Files с ### Created и ### Modified"
     - "Пути posix от корня репозитория"
-    - "Запрещены правки contract/src/**, client/src/**, client/openspec/**"
+    - "Запрещены правки contract/**, client/src/**, client/openspec/** (loop tool-lock на ../contract/)"
     - "При server/src/** — e2e/api/<bc-slug>/*.spec.ts и парный *-test-plan.md в Affected Files"
     - "Change add_to_client_plan_* : Affected Files только client/plan.yml (append); без client/src"
   tasks:

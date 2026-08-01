@@ -14,7 +14,7 @@ export async function runArchive(
     const result = await runPi({
       projectPath: state.projectPath,
       role: "code",
-      prompt: archivePrompt(changeName),
+      prompt: archivePrompt(changeName, state.projectPath),
     });
 
     if (result.exitCode !== 0) {

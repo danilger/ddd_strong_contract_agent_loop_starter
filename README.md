@@ -2,7 +2,7 @@
 
 Каркас: `contract/` (`@repo/contract`) · `server/` · `client/` + правила в `AGENTS.md`.
 
-Агенты: `/start` → `canon/` → **contract handoff** → contract loop → **human approve** → `/handoff-server` → server loop → client по append. Подробности — § [Агенты, OpenSpec и loop](#агенты-openspec-и-loop).
+**После клонирования** процесс разработки лучше начинать командой **`/start`** в корне (Cursor или Pi). Она проведёт через onboarding (этап 0), bootstrap install (этап 1) и дальше по [`canon/PROGRESS.md`](canon/PROGRESS.md). Не разносить вручную `npm install` / правки в обход протокола, если цель — полный delivery-флоу. Команды: `/start` · `/work` · `/next` (этапы 0–17). Подробности — § [Агенты, OpenSpec и loop](#агенты-openspec-и-loop).
 
 ## npm workspaces — как устроено
 
@@ -134,7 +134,7 @@ ESLint видит **импорты в файле** (`no-restricted-imports`): «
 
 | Инструмент | Сильная сторона |
 |------------|-----------------|
-| ESLint | запреты пакетов (`@repo/contract`, `drizzle-orm`, `@ts-rest/*`, Nest HTTP) + имена файлов (не `*.service.ts` / use-case) |
+| ESLint | запреты пакетов (`@repo/contract`, `drizzle-orm`, `@ts-rest/*`) + Nest HTTP **verb**-decorators (`Get`/`Post`/…, не `Controller`) + имена файлов (не `*.service.ts` / use-case) |
 | dependency-cruiser | рёбра слоёв: `domain → …`, `application → infrastructure`, `presentation → infrastructure` и т.д. |
 
 Конфиг: `server/.dependency-cruiser.cjs` (путь `src/<bc>/domain|application|infrastructure|presentation`).
@@ -145,10 +145,21 @@ ESLint видит **импорты в файле** (`no-restricted-imports`): «
 
 - **domain** — нельзя `@repo/contract`, drizzle, `@ts-rest/*`, Nest HTTP, импорты из `application` / `infrastructure` / `presentation`
 - **application** — нельзя contract, drizzle, `@ts-rest/*`, `infrastructure` / `presentation`
-- **presentation** — нельзя drizzle и прямой `infrastructure` (адаптеры вешаются в `*.module.ts`)
+- **presentation / `*.controller.ts` / `health`** — нельзя drizzle и прямой `infrastructure`; ban импорта Nest `Get|Post|Put|Patch|Delete|All|Head|Options` из `@nestjs/common` (пустой `@Controller()` разрешён для `@TsRestHandler`)
 - **check-file** — запрет `*.service.ts`, `*UseCase`, папки `use-cases/` вне каноничных слоёв
 
 Направление по канону: `presentation → application → domain`; `infrastructure` реализует порты application и не торчит в presentation напрямую.
+
+### Осознанные ограничения для агентов
+
+Эти правила специально ужесточены, чтобы генерация кода была предсказуемой:
+
+1. **HTTP SSOT = `contract/`** — маршруты не invent’ятся Nest-ом; server только `@TsRestHandler` на `apiContract`.
+2. **ESLint** ловит `@Get`/`@Post`/… на presentation (не ban `Controller` — он нужен ts-rest как оболочка класса).
+3. **Loop tool-lock:** при `projectPath` = `server/` или `client/` write/edit/bash **не могут** мутировать sibling `../contract/` (тот же механизм, что readonly `plan.yml`). Sole writer контракта — loop@contract.
+4. **Папки BC 1:1** — `contract/src/<bc_slug>` ↔ `server/src/<bc_slug>`.
+
+Цель: меньше drift client/server и меньше «случайных» REST вне контракта при автономных loop.
 
 ---
 
@@ -187,7 +198,8 @@ Alias: `@/…` (`withSlash: true`), как в Vite/tsconfig.
 
 | Контур | Агент | cwd / `projectPath` | Что делает |
 |--------|--------|---------------------|------------|
-| **корень** | Cursor или Pi | репо | `/start` → `canon/`; two-phase handoff (`contract` → approve → `server`). **Без** OpenSpec |
+| **корень** | Cursor или Pi | репо | `/start` · `/work` · `/next` → `canon/PROGRESS` этапы 0–17. **Без** OpenSpec |
+
 | `contract/` | **только Pi** | `…/contract` | OpenSpec + loop по `contract/plan.yml` |
 | `server/` | **только Pi** | `…/server` | OpenSpec + loop по `server/plan.yml` |
 | `client/` | **только Pi** | `…/client` | OpenSpec + loop по `client/plan.yml` |
@@ -201,17 +213,15 @@ Loop (LangGraph в `.agents/loop`) на каждый запуск получае
 
 ```text
 .agents/skills/                 # SSOT всех skills (Cursor + Pi walk-up)
-  ddd-start/                    # протокол /start + этапы 10–11 handoff
+  ddd-start/                    # протокол /start · /work · /next (этапы 0–17)
   openspec-*/                   # OpenSpec skills для Pi@package
   domain-drawio-map/
   context-map-drawio/
   feature-sliced-design/
   react-component-diagram/      # client: npm run docs:component-tree
 
-.cursor/commands/start.md          # Cursor: slash /start → Read ddd-start
-.cursor/commands/handoff-server.md # Cursor: slash /handoff-server → этап 11
-.pi/prompts/start.md               # Pi root: slash /start → тот же skill
-.pi/prompts/handoff-server.md      # Pi root: slash /handoff-server → этап 11
+.cursor/commands/start.md|work.md|next.md
+.pi/prompts/start.md|work.md|next.md
 
 contract|server|client/
   openspec/                     # контур OpenSpec пакета
@@ -222,60 +232,59 @@ contract|server|client/
 
 | Роль | Cursor | Pi |
 |------|--------|-----|
-| Strategic Design | `/start` в корне | `/start` в корне |
-| Contract handoff | этап 10 в `/start` | то же |
-| Server handoff | `/handoff-server` (после approve) | то же |
+| Start / resume | `/start` | `/start` |
+| Stage work | `/work` | `/work` |
+| Accept & advance | `/next` | `/next` |
 | OpenSpec propose/apply/… | — (не в корне) | cwd пакета + `/opsx-*`; skills из `.agents` (walk-up) |
 
-Неизбежный дубль платформ: пары launcher’ов `/start` и `/handoff-server` (Cursor command ≠ Pi prompt). Протокол один — `ddd-start`.
+Неизбежный дубль платформ: launcher’ы `/start` `/work` `/next` (Cursor command ≠ Pi prompt). Протокол один — `ddd-start`.
 
 Тройной `opsx-*` в `contract|server|client/.pi/prompts` остаётся: Pi не читает prompts из `.agents`, loop идёт с cwd пакета.
 
-### Pipeline (two-phase handoff)
+### Pipeline (`/start` · `/work` · `/next`)
 
-**Инвариант:** `server/plan.yml` заполняется только после явного approve готового контракта. `client/plan.yml` — только через server `add_to_client_plan_*` (append).
+**Инвариант:** `server/plan.yml` заполняется на этапе 14 после `/next` с этапа 13 (approve контракта). `client/plan.yml` — только через server `add_to_client_plan_*` (append).
 
-0. **`/start`** (Cursor или Pi в корне) — Strategic Design → `canon/`:
-   - команда: `.cursor/commands/start.md` / `.pi/prompts/start.md`;
-   - протокол: skill `ddd-start` (`.agents/skills/ddd-start/SKILL.md`);
-   - этапы 1–9 confirm-gated (intent → context → event storming → BC → model → rules → use cases → architecture);
-   - до confirm этапа 10 **не** трогать `*/plan.yml` / `project.md`.
-1. **Contract handoff** (этап 10, отдельный confirm) — без кода фич:
-   - заполняет пакетные `project.md` продуктовым контекстом;
-   - заполняет **только** `contract/plan.yml`;
-   - оставляет `server/plan.yml` и `client/plan.yml` **без** рабочих slug.
-2. **loop@contract** — пишет контракт.
-3. **Human approve** — оператор явно принимает `contract/src` («контракт принят» и т.п.).
-4. **Server handoff** (этап 11 / `/handoff-server`) — только после approve:
-   - заполняет `server/plan.yml` по готовому контракту + canon (code/BC + `add_to_client_plan_*`);
-   - `client/plan.yml` не трогает.
-5. **loop@server** — исполняет `server/plan.yml` по порядку; **не** invent’ит client-очередь.
-   Change `add_to_client_plan_<client-slug>` → append `<client-slug>` в `client/plan.yml`.
-6. **loop@client** — стартует, когда в `client/plan.yml` есть ≥1 slug; если план кончился раньше новых append — loop останавливается, оператор **рестартит**.
-7. **Hotfix** — Pi с cwd в нужном пакете + `/opsx-*` + локальный `openspec/`.
+Команды: skill `ddd-start`; прогресс — `canon/PROGRESS.md` (статусы `pending|in_progress|waiting_user|done`).
+
+| # | Stage | Что происходит |
+|---|--------|----------------|
+| 0 | onboarding | кратко: команды + карта этапов; `/next` = понял |
+| 1 | bootstrap | root `npm install`, `server/.env`, `build:contract`, loop deps |
+| 2–10 | canon | intent → … → architecture (`/work` правки, `/next` принять) |
+| 11 | contract_handoff | `*/project.md` + только `contract/plan.yml` |
+| 12 | run_contract_loop | help/spawn contract loop (bg); не ждать конца |
+| 13 | review_contract | review; `/work` может править `contract/src`; `/next` = approve |
+| 14 | server_handoff | заполнить `server/plan.yml` |
+| 15 | run_server_loop | help/spawn server loop |
+| 16 | run_client_and_wait | client по append + рестарты; `/next` только если оба plan закрыты |
+| 17 | development_complete | формально done; дальше hotpatch в пакетах |
 
 ```text
-/start → canon/* ──confirm──► contract handoff → contract loop → human approve
-                                                              │
-                                                              ▼
-                                                    /handoff-server (server plan)
-                                                              │
-                                                              ▼
-                                                         server loop
-                                                              │  create_authorization_bc
-                                                              │  add_to_client_plan_… ──append──► client/plan.yml
-                                                              └─────────────────────────────────► client loop
+/start → 0 onboarding → 1 bootstrap → stages 2–10 (canon)
+       ──/next──► 11 contract handoff ──/next──► 12 contract loop
+                                                      │
+                                                      ▼
+                                             13 review (/next=approve)
+                                                      │
+                                                      ▼
+                                             14 server plan → 15 server loop
+                                                      │  add_to_client_plan_… ──append──► client/plan.yml
+                                                      ▼
+                                             16 client loop (+ restarts) ──gate──/next──► 17 done
 ```
+
+**Stage 16 gate перед `/next`:** нет рабочих slug в `server/plan.yml` и `client/plan.yml`; нет active `openspec/changes` в server/client. Иначе `/next` отклоняется.
 
 ### Что в каком `plan.yml`
 
 | Файл | Кто наполняет | Содержимое |
 |------|---------------|------------|
-| `contract/plan.yml` | этап 10 (contract handoff) | план контракта (автономен) |
-| `server/plan.yml` | этап 11 после approve (`/handoff-server`) | code/BC slug’и **и** `add_to_client_plan_<client-slug>` |
+| `contract/plan.yml` | этап 11 (contract_handoff) | план контракта (автономен) |
+| `server/plan.yml` | этап 14 (server_handoff) после approve на 13 | code/BC slug’и **и** `add_to_client_plan_<client-slug>` |
 | `client/plan.yml` | только apply `add_to_client_plan_*` (server loop) | `<client-slug>`; на старте пуст |
 
-Пример `server/plan.yml` **после этапа 11** (не после contract handoff):
+Пример `server/plan.yml` **после этапа 14** (не после contract handoff):
 
 ```text
 create_authorization_bc
@@ -289,7 +298,7 @@ create_auth_ui
 ```
 
 **Нельзя** писать `create_auth_ui` напрямую в `server/plan.yml` — только как суффикс `add_to_client_plan_…`.
-**Нельзя** заполнять `server/plan.yml` до явного approve контракта.
+**Нельзя** заполнять `server/plan.yml` до `/next` с этапа 13 (approve контракта).
 ### `add_to_client_plan_*` (server → client)
 
 - Полноценный OpenSpec-change в **server** openspec (propose → apply → archive).
@@ -311,6 +320,8 @@ npm run cli -- "D:/projects/ddd_strong_contract_agent_loop_starter/client"
 ```
 
 Или Studio: `npm run dev` в `.agents/loop`, input `{ "projectPath": "<abs>" }`.
+
+**Tool-lock:** `plan.yml` всегда readonly для Pi; для `server`/`client` дополнительно readonly весь sibling `../contract/` (правки контракта — только через loop@contract).
 
 ### Check
 

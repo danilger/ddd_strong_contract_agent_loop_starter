@@ -27,6 +27,8 @@ Changes вне `plan.yml` игнорируются.
 
 `plan.yml` **только для чтения** оркестратором/Pi: нельзя править, ставить `[x]` или иначе отмечать этапы — прогресс только через OpenSpec archive.
 
+При `projectPath` = `…/server` или `…/client` sibling-пакет `../contract/` тоже **read-only** на уровне write/edit/bash tools (как `plan.yml`). Менять контракт может только loop с `projectPath` = `…/contract`.
+
 ## Env (`.env`)
 
 | Переменная | Назначение |

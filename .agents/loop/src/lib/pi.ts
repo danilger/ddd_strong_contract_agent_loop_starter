@@ -11,7 +11,9 @@ import {
 } from "@earendil-works/pi-coding-agent";
 import { getModelForRole, type Role } from "../config.js";
 import {
-  createPlanProtectedTools,
+  CONTRACT_READONLY_FOR_PACKAGE_LOOP,
+  createPackageProtectedTools,
+  isContractLockedPackage,
   PLAN_YML_READONLY_MESSAGE,
 } from "./protectPlanYml.js";
 
@@ -323,7 +325,7 @@ async function createPiSession(
     modelRuntime,
     sessionManager: SessionManager.inMemory(projectPath),
     settingsManager,
-    customTools: createPlanProtectedTools(
+    customTools: createPackageProtectedTools(
       projectPath,
       shellPath ? { shellPath } : undefined,
     ),
@@ -400,26 +402,32 @@ export async function runPi(options: RunPiOptions): Promise<PiResult> {
   });
 }
 
-const PLAN_YML_PROMPT_RULE = [
-  "",
-  "Hard rule:",
-  `- ${PLAN_YML_READONLY_MESSAGE}`,
-  "- Do not add [x] / checkboxes to plan.yml. Progress is tracked only via OpenSpec archive.",
-].join("\n");
-
-export function proposePrompt(changeName: string): string {
-  return `/opsx-propose ${changeName}${PLAN_YML_PROMPT_RULE}`;
+function hardRulesPrompt(projectPath?: string): string {
+  const lines = [
+    "",
+    "Hard rule:",
+    `- ${PLAN_YML_READONLY_MESSAGE}`,
+    "- Do not add [x] / checkboxes to plan.yml. Progress is tracked only via OpenSpec archive.",
+  ];
+  if (projectPath && isContractLockedPackage(projectPath)) {
+    lines.push(`- ${CONTRACT_READONLY_FOR_PACKAGE_LOOP}`);
+  }
+  return lines.join("\n");
 }
 
-export function applyPrompt(changeName: string): string {
-  return `/opsx-apply ${changeName}${PLAN_YML_PROMPT_RULE}`;
+export function proposePrompt(changeName: string, projectPath?: string): string {
+  return `/opsx-propose ${changeName}${hardRulesPrompt(projectPath)}`;
 }
 
-export function syncPrompt(changeName: string): string {
-  return `/opsx-sync ${changeName}${PLAN_YML_PROMPT_RULE}`;
+export function applyPrompt(changeName: string, projectPath?: string): string {
+  return `/opsx-apply ${changeName}${hardRulesPrompt(projectPath)}`;
 }
 
-export function archivePrompt(changeName: string): string {
+export function syncPrompt(changeName: string, projectPath?: string): string {
+  return `/opsx-sync ${changeName}${hardRulesPrompt(projectPath)}`;
+}
+
+export function archivePrompt(changeName: string, projectPath?: string): string {
   return [
     `/opsx-archive ${changeName}`,
     "",
@@ -429,6 +437,6 @@ export function archivePrompt(changeName: string): string {
     "- Do NOT use AskUserQuestion or wait for user input.",
     "- You MUST complete the archive move: openspec/changes/<name>/ → openspec/changes/archive/YYYY-MM-DD-<name>/.",
     "- Finish only after the active change directory is gone and the archive folder exists.",
-    PLAN_YML_PROMPT_RULE.trim(),
+    hardRulesPrompt(projectPath).trim(),
   ].join("\n");
 }

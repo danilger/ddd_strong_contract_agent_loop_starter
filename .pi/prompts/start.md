@@ -1,8 +1,8 @@
 ---
-description: "DDD strategic planning from idea to canon/ artifacts, then optional contract handoff"
+description: "Start or resume root delivery protocol (canon → loops) via PROGRESS.md"
 ---
 
-Run **DDD strategic planning** (`/start`).
+Run **root delivery** (`/start`).
 
 **First action (mandatory):** Read and follow exactly:
 
@@ -10,13 +10,11 @@ Run **DDD strategic planning** (`/start`).
 
 Then:
 
-1. Read `canon/PROGRESS.md` (create/update as the skill requires).
-2. Announce the current stage (resume unless the user asked to start over).
-3. Execute only that stage; stop at confirm / accept / waiting_user.
-4. Do **not** write package feature code or `*/plan.yml` until the user confirms **Этап 10 (contract handoff)** per the skill.
-5. On этап 10: fill `*/project.md` and **only** `contract/plan.yml`. Leave `server/plan.yml` without work slugs until **Этап 11** / `/handoff-server` after contract approve.
+1. Read `canon/PROGRESS.md`.
+2. If any stage is `in_progress` or `waiting_user` → **resume** it (do not pick a new pending).
+3. Else first `pending` → `in_progress` → execute that stage.
+4. Arg «начать заново» only resets after explicit confirm per skill.
+5. After the turn: set `waiting_user` when awaiting the human; print **Command hints** (`/work` · `/next` · `/start`).
 
 **Input**: The argument after `/start` (optional).
 **Provided arguments**: $@
-
-Examples: «начать заново», «продолжи с event storming», a short product idea.

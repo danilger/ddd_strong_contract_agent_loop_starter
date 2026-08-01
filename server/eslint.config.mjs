@@ -13,6 +13,8 @@ const FORBIDDEN_DRIZZLE_IN_PRESENTATION =
   'FORBIDDEN: drizzle-orm in presentation — use CommandBus/QueryBus and adapters';
 const FORBIDDEN_INFRA_IN_PRESENTATION =
   'FORBIDDEN: direct infrastructure import in presentation — wire adapters in *.module.ts';
+const FORBIDDEN_NEST_HTTP_VERBS =
+  'FORBIDDEN: Nest HTTP route decorators — define the route in @repo/contract and use @TsRestHandler. Empty @Controller() shell is allowed.';
 
 export default tseslint.config(
   {
@@ -114,11 +116,31 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/**/presentation/**/*.ts'],
+    files: [
+      'src/**/presentation/**/*.ts',
+      'src/**/*.controller.ts',
+      'src/health/**/*.ts',
+    ],
     rules: {
       'no-restricted-imports': [
         'error',
         {
+          paths: [
+            {
+              name: '@nestjs/common',
+              importNames: [
+                'Get',
+                'Post',
+                'Put',
+                'Patch',
+                'Delete',
+                'All',
+                'Head',
+                'Options',
+              ],
+              message: FORBIDDEN_NEST_HTTP_VERBS,
+            },
+          ],
           patterns: [
             {
               group: ['drizzle-orm', 'drizzle-orm/*'],

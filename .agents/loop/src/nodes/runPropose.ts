@@ -14,7 +14,7 @@ export async function runPropose(
     const result = await runPi({
       projectPath: state.projectPath,
       role: "plan",
-      prompt: proposePrompt(changeName),
+      prompt: proposePrompt(changeName, state.projectPath),
     });
 
     if (result.exitCode !== 0) {

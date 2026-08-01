@@ -10,8 +10,8 @@
 Детали логики и функционала **этого** продукта (домены, роли, сценарии, ограничения ТЗ) —
 в [`project.md`](./project.md).
 
-До завершения **contract handoff** (этап 10) `project.md` пуст (или только заголовок-заглушка).
-`plan.yml` без рабочих slug до **server handoff** (этап 11 / `/handoff-server`) после approve контракта.
+До завершения **contract handoff** (этап 11) `project.md` пуст (или только заголовок-заглушка).
+`plan.yml` без рабочих slug до **server handoff** (этап 14) после approve на этапе 13 (`/next`).
 Root-агент заполняет его под задачу; Pi/loop читает оба файла.
 
 ## Направление зависимостей
@@ -115,7 +115,9 @@ interface XReadRepositoryPort {
 
 ## Presentation
 
-- `@TsRestHandler(..., { validateResponses: true })`.
+- **MUST:** `@TsRestHandler(..., { validateResponses: true })` только на роуты из `@repo/contract`.
+- **MUST NOT:** Nest HTTP route-декораторы `@Get` / `@Post` / `@Put` / `@Patch` / `@Delete` / `@All` / `@Head` / `@Options`
+  (ESLint `no-restricted-imports` в `eslint.config.mjs`). Пустой `@Controller()` — только оболочка для ts-rest.
 - Create/update/delete: `commandBus.execute(adapter.adapt(body))`.
 - Get/list: `queryBus.execute(new GetXQuery(...))`.
 - Маппинг ответа: `*DtoAdapter.adaptFromAggregate` (write) / `adaptFromReadModel` (read).
@@ -218,8 +220,9 @@ Skills: `.agents/skills/domain-drawio-map`, `.agents/skills/context-map-drawio`
 ## Loop / Pi и client handoff
 
 - Агент: **только Pi** (loop `projectPath` = `server/`).
-- Не менять `contract/src/**`, `client/src/**`, `client/openspec/**`.
-- `plan.yml` наполняет **root** на **server-handoff** (этап 11), только после явного approve готового контракта — не на contract handoff.
+- Не менять `contract/**`, `client/src/**`, `client/openspec/**`.
+  Tool-lock loop отказывает write/edit/bash в `../contract/` (как readonly `plan.yml`).
+- `plan.yml` наполняет **root** на **server-handoff** (этап 14), только после `/next` с этапа 13 (approve контракта) — не на contract handoff.
   До того файл пуст / только `#` (без рабочих slug).
 - Очередь UI планирует root в `server/plan.yml`. Типы slug’ов:
   - обычный BC/code change (например `create_authorization_bc`);

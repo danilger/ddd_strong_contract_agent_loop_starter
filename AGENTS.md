@@ -5,52 +5,56 @@ Monorepo: contract-first, тактические DDD + CQRS.
 
 ## Инварианты
 
-- `@repo/contract` — единая HTTP-граница client ↔ server.
+- `@repo/contract` (`apiContract`) — **единственная** HTTP-граница client ↔ server. Новые endpoints только там.
+- Server presentation: только `@TsRestHandler` на роуты из контракта. Nest `@Get` / `@Post` / … **запрещены** (ESLint). Пустой `@Controller()` — оболочка для ts-rest.
+- Писать в `contract/` может **contract loop**, root при handoff планов/`project.md`, и **root на этапе 13** (`review_contract`) для правок `contract/src`. Loop@server и loop@client: tool-lock на `../contract/`.
+- Папки BC 1:1: `contract/src/<bc_slug>` ↔ `server/src/<bc_slug>` ↔ slug в `canon/04_bounded_contexts.md`. Исключения: `contract/src/shared/`, `contract/src/health/` (+ `server/src/health/`).
 - После изменений в пакете: `npm run check` **из cwd этого пакета** (`server/` / `client/` / …).
 
-## Root agent (Cursor или Pi) — `/start` затем two-phase handoff
+## Root agent — `/start` · `/work` · `/next`
 
-Корневой агент **не** реализует фичи в `contract|server|client/src`.
+Корневой агент ведёт delivery по [`canon/PROGRESS.md`](canon/PROGRESS.md). Протокол SSOT: skill `ddd-start` (`.agents/skills/ddd-start/SKILL.md`).
 
-### Strategic Design — `/start`
+Команды (Cursor: `.cursor/commands/`; Pi: `.pi/prompts/`):
 
-Перед handoff (новая идея / домен): команда `/start` (Cursor: `.cursor/commands/start.md`; Pi: `.pi/prompts/start.md`). Протокол — skill `ddd-start` (SSOT: `.agents/skills/ddd-start/SKILL.md`).
+| Command | Role |
+|---------|------|
+| `/start` | Resume `in_progress`/`waiting_user`, else first `pending` → execute |
+| `/work` | Work on current stage only (prefix optional in this thread) |
+| `/next` | Mark current `done`, advance, execute next (stage 16 has a plan-closed gate) |
 
-Этапы confirm-gated пишут только `canon/` (`01_intent` … `08_architecture`, `PROGRESS.md`). Event storming: рекомендации в чате, `.dio` заполняет пользователь; accept | iterate на каждом ревью. До отдельного confirm этапа 10 **не** трогать пакетные `plan.yml` / `project.md`.
+После review контракта: `/next` (этап 13→14).
 
-### Handoff (две фазы)
+Корневой агент **не** реализует фичи в `server|client/src`. `contract/src` — только на этапе 13 или через contract loop.
 
-После согласованного `canon/` (или если canon уже есть). Протокол — `ddd-start` этапы 10–11; slash `/handoff-server` для фазы 2.
+### Этапы 0–1 (setup)
 
-#### 1. Contract handoff (этап 10)
+| # | id | Outcome |
+|---|-----|---------|
+| 0 | onboarding | понять `/start` · `/work` · `/next` и карту этапов |
+| 1 | bootstrap | root `npm install`, `server/.env`, `build:contract`, loop deps |
 
-1. Убеждается, что в **каждом пакете** (`contract|server|client`) есть loop-required файлы:
-   `project.md`, `plan.yml`, `openspec/config.yaml`, `AGENTS.md`.
-   В корне OpenSpec **нет** — root только `/start` + handoff.
-2. Заполняет пакетные `project.md` **продуктовым** контекстом (домены, сценарии, ТЗ).
-   До handoff они пустые; общие архитектурные правила остаются в `*/AGENTS.md`.
-3. Заполняет **только** `contract/plan.yml` slug’ами `*-contract` (или иными согласованными именами).
-4. Оставляет `server/plan.yml` **без** рабочих slug (пустой / только `#`).
-   **Запрещено** заполнять server-очередь на этой фазе.
-5. Оставляет `client/plan.yml` **без** рабочих slug —
-   наполняет его только server loop через `add_to_client_plan_*`.
+### Этапы 2–10 (canon)
 
-Далее оператор: **contract loop** → human review → **явный approve** контракта.
+Пишут только `canon/` (`01_intent` … `08_architecture`). До этапа 11 **не** трогать пакетные `plan.yml` / `project.md`.
 
-#### 2. Server handoff (этап 11, `/handoff-server`)
+### Этапы 11–17 (handoff + loops)
 
-Только после явного approve готового `@repo/contract` («контракт принят» и т.п.):
+| # | id | Outcome |
+|---|-----|---------|
+| 11 | contract_handoff | `*/project.md` + `contract/plan.yml` only |
+| 12 | run_contract_loop | help/spawn contract loop (bg) |
+| 13 | review_contract | `/next` = approve; `/work` may edit `contract/src` |
+| 14 | server_handoff | `server/plan.yml` from approved contract |
+| 15 | run_server_loop | help/spawn server loop |
+| 16 | run_client_and_wait | client append/restarts; `/next` only if plans closed |
+| 17 | development_complete | formal end; further hotpatch in packages |
 
-1. Опирается на `canon/` **и** фактический `contract/src/**` (роуты, статусы, DTO).
-2. Заполняет `server/plan.yml` **порядком работы server**, включая моменты выдачи UI:
-   - code/BC slug’и (например `create_authorization_bc`);
-   - затем `add_to_client_plan_<client-slug>` — отдельный server OpenSpec-change,
-     apply которого append’ит `<client-slug>` в `client/plan.yml`.
-   **Не** писать `<client-slug>` напрямую строкой в `server/plan.yml`.
-3. `client/plan.yml` не трогать; `contract/src` не менять.
-4. При необходимости обновить `server/project.md` под утверждённый контракт.
+**Contract handoff (11):** fill `project.md` + `contract/plan.yml`; leave server/client plans without work slugs.
 
-Skills и slash: SSOT skills — `.agents/skills/` (Cursor и Pi). Root-команды — `.cursor/commands/start.md`, `handoff-server.md` и зеркала в `.pi/prompts/`. OpenSpec slash (`/opsx-*`) — только в `*/.pi/prompts` при cwd пакета. Пакетные loop — **только Pi**.
+**Server handoff (14):** only after stage 13 `/next` (approve). Fill `server/plan.yml` (BC/code + `add_to_client_plan_*`); do not touch `client/plan.yml` or `contract/`.
+
+Skills: SSOT `.agents/skills/`. OpenSpec `/opsx-*` — только в `*/.pi/prompts` при cwd пакета. Пакетные loop — **только Pi**.
 
 Полный операторский процесс: `README.md` § «Агенты, OpenSpec и loop».
 

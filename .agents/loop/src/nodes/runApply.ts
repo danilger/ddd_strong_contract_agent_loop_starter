@@ -14,7 +14,7 @@ export async function runApply(
     const result = await runPi({
       projectPath: state.projectPath,
       role: "code",
-      prompt: applyPrompt(changeName),
+      prompt: applyPrompt(changeName, state.projectPath),
     });
 
     if (result.exitCode !== 0) {
