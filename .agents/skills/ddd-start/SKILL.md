@@ -141,17 +141,17 @@ Ask the user (via `/work`) to put materials in `canon/02_context/`. When they sa
 
 Sources: intent + context. File: `canon/03_event_storming.dio`.
 
-1. Propose starter lists: Domain Events, Commands, Actors, Policies (chat only).
+1. Propose starter lists (chat only), matching legend in `.dio`: Domain Events, Commands, Actors, Policies, Aggregates, Views, External Systems.
 2. User fills the `.dio` (legend already in file).
 3. Do **not** edit `.dio` unless user asks via `/work`.
-4. On request, review card types, gaps, transitions; recommend fixes.
+4. On request, review card types vs legend, gaps, transitions; recommend fixes.
 5. `/next` = accept file as final.
 
 ---
 
 ## Этап 5: Event Storming analysis
 
-Analyze `03_event_storming.dio`: duplicates, gaps, causal links. Findings + fixes. Iterate with `/work`. Record brief agreement notes in PROGRESS. `/next` when flow agreed.
+Analyze `03_event_storming.dio`: duplicates, gaps, causal links across all legend types (events, commands, actors, policies, aggregates, views, external systems). Findings + fixes. Iterate with `/work`. Record brief agreement notes in PROGRESS. `/next` when flow agreed.
 
 ---
 
