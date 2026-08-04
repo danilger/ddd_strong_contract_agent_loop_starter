@@ -78,6 +78,36 @@ export function commandTouchesPlanYml(command: string): boolean {
   return /\bplan\.yml\b/i.test(command);
 }
 
+/**
+ * True when the bash command invokes the OpenSpec CLI (not a path like openspec/changes).
+ * Matches `openspec` only in command position: start of line/segment, after && || ; |
+ */
+export function commandInvokesOpenspec(command: string): boolean {
+  return /(?:^|[\n;&|]|&&|\|\|)\s*openspec\b(?!\s*[/\\])/im.test(command);
+}
+
+function bashSingleQuote(value: string): string {
+  return `'${value.replace(/'/g, `'\\''`)}'`;
+}
+
+/**
+ * Pin OpenSpec CLI invocations to package projectPath so `cd .. && openspec …`
+ * cannot create monorepo-root openspec/. Does not rewrite path tokens (openspec/…).
+ */
+export function pinOpenspecCommandToProject(
+  command: string,
+  projectPath: string,
+): string {
+  if (!commandInvokesOpenspec(command)) {
+    return command;
+  }
+  const quotedRoot = bashSingleQuote(path.resolve(projectPath).replace(/\\/g, "/"));
+  return command.replace(
+    /(^|[\n;&|]|&&|\|\|)\s*openspec\b(?!\s*[/\\])/gim,
+    (_m, prefix: string) => `${prefix} cd ${quotedRoot} && openspec`,
+  );
+}
+
 function assertWritablePath(projectPath: string, absolutePath: string): void {
   if (isPlanYmlPath(projectPath, absolutePath)) {
     throw new Error(PLAN_YML_READONLY_MESSAGE);
@@ -101,7 +131,8 @@ function assertWritableCommand(projectPath: string, command: string): void {
 
 /**
  * write / edit / bash tools that refuse mutations to plan.yml and (for
- * server/client) the sibling contract/ package.
+ * server/client) the sibling contract/ package. OpenSpec CLI is always
+ * forced to run with cwd = projectPath (package openspec/, not monorepo root).
  */
 export function createPackageProtectedTools(
   projectPath: string,
@@ -111,6 +142,7 @@ export function createPackageProtectedTools(
   const localBash = createLocalBashOperations(
     shellPath ? { shellPath } : undefined,
   );
+  const resolvedProject = path.resolve(projectPath);
 
   const write = createWriteToolDefinition(projectPath, {
     operations: {
@@ -141,9 +173,11 @@ export function createPackageProtectedTools(
   const bash = createBashToolDefinition(projectPath, {
     shellPath,
     operations: {
-      exec: async (command, cwd, execOptions) => {
+      exec: async (command, _cwd, execOptions) => {
         assertWritableCommand(projectPath, command);
-        return localBash.exec(command, cwd, execOptions);
+        const pinned = pinOpenspecCommandToProject(command, resolvedProject);
+        // Always start the shell in the package; pinOpenspec also re-cds before each openspec.
+        return localBash.exec(pinned, resolvedProject, execOptions);
       },
     },
   });
