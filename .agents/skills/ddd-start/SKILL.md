@@ -190,10 +190,16 @@ Module-by-BC; layers per `server/AGENTS.md`; path toward `@repo/contract`. Canon
 On execute (from `/start` or `/next`):
 
 1. Ensure each package has `project.md`, `plan.yml`, `openspec/config.yaml`, `AGENTS.md`.
-2. Fill `*/project.md` from `canon/`.
-3. Fill **only** `contract/plan.yml` (`*-contract` → `contract/src/<bc_slug>/`).
-4. Leave `server/plan.yml` and `client/plan.yml` without work slugs.
-5. No feature `src` implementation.
+2. Fill `*/project.md` from `canon/` (общий продукт / контекст пакета).
+3. Fill **only** `contract/plan.yml` with **kebab-case** slug’ами `*-contract` (regex `^[a-z0-9]+(-[a-z0-9]+)*$`; без `_`). Пример: `auth-contract` → `contract/src/auth/`.
+4. In **`contract/project.md`**, add section **`## Очередь (plan.yml)`**: one `### <slug>` block per work slug in `contract/plan.yml` (slug in heading **exactly** as in plan — 1:1). Each block:
+   - Цель: …
+   - In scope: …
+   - Out of scope: …
+   - Done when: …
+   No extra `###` blocks without a plan line; no plan work slug without a block. `plan.yml` stays a thin queue (one line = one slug).
+5. Leave `server/plan.yml` and `client/plan.yml` without work slugs (other packages’ `project.md` may get product context, but **do not** invent server/client queue sections for empty plans).
+6. No feature `src` implementation.
 
 Then `waiting_user`. Hints: `/next` → stage 12 (run contract loop).
 
@@ -227,10 +233,11 @@ User reviews `contract/src`.
 
 Using `canon/` + approved `contract/src/**`:
 
-1. Optionally refresh `server/project.md`.
-2. Fill `server/plan.yml` with BC/code slugs only for BCs present in contract, plus `add_to_client_plan_<client-slug>` (never raw client slugs).
-3. Do not edit `client/plan.yml` or `contract/**`.
-4. No feature `src` on server/client here.
+1. Refresh `server/project.md` product context as needed.
+2. Fill `server/plan.yml` with **kebab-case** only (no `_`): BC/code slugs for BCs present in contract (e.g. `extend-auth-bc-with-roles`), plus `add-to-client-plan-<client-slug>` (never raw client slugs like `create-auth-ui`).
+3. In **`server/project.md`**, add/update **`## Очередь (plan.yml)`**: one `### <slug>` block per work slug in `server/plan.yml` (exact 1:1). Each block: Цель / In scope / Out of scope / Done when. No orphan blocks; no missing blocks. BC/code queue items must **not** instruct editing `../client/plan.yml` — client append only via `add-to-client-plan-*` changes.
+4. Do not edit `client/plan.yml` or `contract/**`.
+5. No feature `src` on server/client here.
 
 Then `waiting_user`; `/next` → stage 15.
 
@@ -246,7 +253,7 @@ Same pattern as stage 12 with `projectPath` = `…/server`. Background spawn ok;
 
 Inform the user:
 
-- Server loop appends to `client/plan.yml` via `add_to_client_plan_*`.
+- Server loop appends to `client/plan.yml` via `add-to-client-plan-*`.
 - When `client/plan.yml` has ≥1 work slug, start client loop (help/`/work запусти` with `…/client`).
 - Client may **drain the plan and stop** while server still appends → **restart** client loop.
 - Stay on this stage until **both** server and client plans are closed.

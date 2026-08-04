@@ -1,5 +1,6 @@
 # filled by root Pi/Cursor under a task
-# Include code/BC slugs AND add_to_client_plan_<client-slug> in readiness order.
+# Include code/BC slugs AND add-to-client-plan-<client-slug> in readiness order.
+# Slug format: kebab-case only (^[a-z0-9]+(-[a-z0-9]+)*$) — no underscores.
 # Example (do not leave active unless tasked):
-# create_authorization_bc
-# add_to_client_plan_create_auth_ui
+# extend-auth-bc-with-roles
+# add-to-client-plan-create-auth-ui

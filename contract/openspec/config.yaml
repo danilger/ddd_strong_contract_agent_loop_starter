@@ -4,6 +4,8 @@ context: |
   Пакет @repo/contract — HTTP SSOT (Zod + ts-rest).
   Агент: только Pi (cwd / projectPath = contract/).
   План автономен от server/client plan.yml.
+  Change name (propose): kebab-case *-contract (без underscores).
+  Scope текущего change: ## Очередь в project.md (### <slug> 1:1 с plan.yml).
   Язык: русский.
 
 rules:
@@ -11,9 +13,10 @@ rules:
     - Формат Requirement + Scenario (WHEN/THEN)
     - SHALL/MUST; язык требований: русский
   proposal:
+    - "Change name: kebab-case only (^[a-z0-9]+(-[a-z0-9]+)*$), обычно *-contract; без _"
     - "Обязательная секция ## Affected Files с ### Created и ### Modified"
     - "Пути posix от корня репозитория (contract/src/...)"
     - "Только contract/; без Nest/Drizzle/UI"
   tasks:
     - "После изменений: npm run build (из корня: npm run build:contract) или эквивалент пакета"
-    - "Slug naming: *-contract"
+    - "Slug naming: *-contract (kebab-case)"

@@ -243,7 +243,7 @@ contract|server|client/
 
 ### Pipeline (`/start` · `/work` · `/next`)
 
-**Инвариант:** `server/plan.yml` заполняется на этапе 14 после `/next` с этапа 13 (approve контракта). `client/plan.yml` — только через server `add_to_client_plan_*` (append).
+**Инвариант:** `server/plan.yml` заполняется на этапе 14 после `/next` с этапа 13 (approve контракта). `client/plan.yml` — только через server `add-to-client-plan-*` (append). Все slug — **kebab-case** (без `_`); иначе loop падает при чтении plan.
 
 Команды: skill `ddd-start`; прогресс — `canon/PROGRESS.md` (статусы `pending|in_progress|waiting_user|done`).
 
@@ -269,7 +269,7 @@ contract|server|client/
                                                       │
                                                       ▼
                                              14 server plan → 15 server loop
-                                                      │  add_to_client_plan_… ──append──► client/plan.yml
+                                                      │  add-to-client-plan-… ──append──► client/plan.yml
                                                       ▼
                                              16 client loop (+ restarts) ──gate──/next──► 17 done
 ```
@@ -280,31 +280,36 @@ contract|server|client/
 
 | Файл | Кто наполняет | Содержимое |
 |------|---------------|------------|
-| `contract/plan.yml` | этап 11 (contract_handoff) | план контракта (автономен) |
-| `server/plan.yml` | этап 14 (server_handoff) после approve на 13 | code/BC slug’и **и** `add_to_client_plan_<client-slug>` |
-| `client/plan.yml` | только apply `add_to_client_plan_*` (server loop) | `<client-slug>`; на старте пуст |
+| `contract/plan.yml` | этап 11 (contract_handoff) | kebab slug’и `*-contract` |
+| `server/plan.yml` | этап 14 (server_handoff) после approve на 13 | code/BC slug’и **и** `add-to-client-plan-<client-slug>` |
+| `client/plan.yml` | только apply `add-to-client-plan-*` (server loop) | `<client-slug>`; на старте пуст |
+
+Расшифровка каждого slug — в секции `## Очередь (plan.yml)` того же пакета `project.md` (`### <slug>` 1:1 со строкой plan). `plan.yml` остаётся тонкой очередью.
 
 Пример `server/plan.yml` **после этапа 14** (не после contract handoff):
 
 ```text
-create_authorization_bc
-add_to_client_plan_create_auth_ui
+extend-auth-bc-with-roles
+add-to-client-plan-create-auth-ui
 ```
 
 После выполнения второго change в `client/plan.yml` появляется:
 
 ```text
-create_auth_ui
+create-auth-ui
 ```
 
-**Нельзя** писать `create_auth_ui` напрямую в `server/plan.yml` — только как суффикс `add_to_client_plan_…`.
+**Нельзя** писать `create-auth-ui` напрямую в `server/plan.yml` — только как суффикс `add-to-client-plan-…`.
 **Нельзя** заполнять `server/plan.yml` до `/next` с этапа 13 (approve контракта).
-### `add_to_client_plan_*` (server → client)
+**Нельзя** использовать `_` в slug (OpenSpec/loop ждут kebab).
+
+### `add-to-client-plan-*` (server → client)
 
 - Полноценный OpenSpec-change в **server** openspec (propose → apply → archive).
 - Apply: **append-only** одна строка `<client-slug>` в конец `client/plan.yml`.
 - Не overwrite, не правка существующих строк, не `[x]`.
 - Не трогать `client/openspec/**` и `client/src/**`.
+- BC/code change **не** пишет в `client/plan.yml`.
 - Client-агент **никогда** не пишет свой `plan.yml` (прогресс = archive).
 
 ### Запуск loop

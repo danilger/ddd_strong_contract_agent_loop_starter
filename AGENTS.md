@@ -9,6 +9,7 @@ Monorepo: contract-first, тактические DDD + CQRS.
 - Server presentation: только `@TsRestHandler` на роуты из контракта. Nest `@Get` / `@Post` / … **запрещены** (ESLint). Пустой `@Controller()` — оболочка для ts-rest.
 - Писать в `contract/` может **contract loop**, root при handoff планов/`project.md`, и **root на этапе 13** (`review_contract`) для правок `contract/src`. Loop@server и loop@client: tool-lock на `../contract/`.
 - Папки BC 1:1: `contract/src/<bc_slug>` ↔ `server/src/<bc_slug>` ↔ slug в `canon/04_bounded_contexts.md`. Исключения: `contract/src/shared/`, `contract/src/health/` (+ `server/src/health/`).
+- **Plan/OpenSpec slug:** только **kebab-case** (`^[a-z0-9]+(-[a-z0-9]+)*$`). Запрещены `_`, camelCase. Примеры: `auth-contract`, `extend-auth-bc-with-roles`, `add-to-client-plan-create-auth-ui`. Prefix client-handoff: `add-to-client-plan-<client-slug>`.
 - После изменений в пакете: `npm run check` **из cwd этого пакета** (`server/` / `client/` / …).
 
 ## Root agent — `/start` · `/work` · `/next`
@@ -50,9 +51,9 @@ Monorepo: contract-first, тактические DDD + CQRS.
 | 16 | run_client_and_wait | client append/restarts; `/next` only if plans closed |
 | 17 | development_complete | formal end; further hotpatch in packages |
 
-**Contract handoff (11):** fill `project.md` + `contract/plan.yml`; leave server/client plans without work slugs.
+**Contract handoff (11):** fill `*/project.md` (продукт + секция `## Очередь (plan.yml)` с блоком `### <slug>` на каждый slug в `contract/plan.yml`) + `contract/plan.yml` (kebab only); leave server/client plans without work slugs.
 
-**Server handoff (14):** only after stage 13 `/next` (approve). Fill `server/plan.yml` (BC/code + `add_to_client_plan_*`); do not touch `client/plan.yml` or `contract/`.
+**Server handoff (14):** only after stage 13 `/next` (approve). Fill `server/plan.yml` (BC/code + `add-to-client-plan-*`, kebab only); в `server/project.md` — `## Очередь` 1:1 со slug’ами; do not touch `client/plan.yml` or `contract/`. BC-change **не** пишет в `client/plan.yml` — только change `add-to-client-plan-*`.
 
 Skills: SSOT `.agents/skills/`. OpenSpec `/opsx-*` — только в `*/.pi/prompts` при cwd пакета. Пакетные loop — **только Pi**.
 

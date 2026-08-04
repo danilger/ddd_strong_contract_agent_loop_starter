@@ -4,9 +4,11 @@ context: |
   Пакет server — NestJS, DDD+CQRS, Playwright API e2e.
   Агент: только Pi (cwd / projectPath = server/).
   Не менять contract/** (tool-lock). Client-очередь планирует root в server/plan.yml:
-  после BC-change идёт slug add_to_client_plan_<client-slug> — полноценный
+  после BC-change идёт slug add-to-client-plan-<client-slug> — полноценный
   OpenSpec-change, apply которого append-only дописывает <client-slug> в
   ../client/plan.yml. Server не invent'ит моменты выдачи UI сам.
+  Change name (propose): только kebab-case; без underscores.
+  Scope текущего change: ## Очередь в project.md (### <slug> 1:1 с plan.yml).
   Язык: русский.
 
 rules:
@@ -14,13 +16,15 @@ rules:
     - Формат Requirement + Scenario (WHEN/THEN)
     - SHALL/MUST; язык требований: русский
   proposal:
+    - "Change name: kebab-case only (^[a-z0-9]+(-[a-z0-9]+)*$); без _"
     - "Обязательная секция ## Affected Files с ### Created и ### Modified"
     - "Пути posix от корня репозитория"
     - "Запрещены правки contract/**, client/src/**, client/openspec/** (loop tool-lock на ../contract/)"
+    - "BC/code change: не трогать ../client/plan.yml (нет задач append в tasks/proposal)"
     - "При server/src/** — e2e/api/<bc-slug>/*.spec.ts и парный *-test-plan.md в Affected Files"
-    - "Change add_to_client_plan_* : Affected Files только client/plan.yml (append); без client/src"
+    - "Change add-to-client-plan-* : Affected Files только client/plan.yml (append); без client/src"
   tasks:
     - "npm run check из server/ должен быть зелёным (для code/BC changes)"
     - "После BC: npm run docs:domain-map -- <slug>; npm run docs:context-map -- --context <slug>"
-    - "add_to_client_plan_<client-slug>: единственное действие apply — append одной строки <client-slug> в конец ../client/plan.yml"
-    - "Не overwrite client/plan.yml; не трогать уже существующие строки; не invent'ить append вне slug add_to_client_plan_*"
+    - "add-to-client-plan-<client-slug>: единственное действие apply — append одной строки <client-slug> в конец ../client/plan.yml"
+    - "Не overwrite client/plan.yml; не трогать уже существующие строки; не invent'ить append вне slug add-to-client-plan-*"

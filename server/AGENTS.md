@@ -223,13 +223,15 @@ Skills: `.agents/skills/domain-drawio-map`, `.agents/skills/context-map-drawio`
 - Не менять `contract/**`, `client/src/**`, `client/openspec/**`.
   Tool-lock loop отказывает write/edit/bash в `../contract/` (как readonly `plan.yml`).
 - `plan.yml` наполняет **root** на **server-handoff** (этап 14), только после `/next` с этапа 13 (approve контракта) — не на contract handoff.
-  До того файл пуст / только `#` (без рабочих slug).
+  До того файл пуст / только `#` (без рабочих slug). Slug’и — **только kebab-case** (без `_`).
+- Scope текущего change: блок `### <slug>` в `## Очередь (plan.yml)` в [`project.md`](./project.md).
 - Очередь UI планирует root в `server/plan.yml`. Типы slug’ов:
-  - обычный BC/code change (например `create_authorization_bc`);
-  - `add_to_client_plan_<client-slug>` — полноценный OpenSpec-change в **server** openspec;
+  - обычный BC/code change (например `extend-auth-bc-with-roles`);
+  - `add-to-client-plan-<client-slug>` — полноценный OpenSpec-change в **server** openspec;
     apply = **append-only** одна строка `<client-slug>` в конец `../client/plan.yml`.
-- **Не** писать client-slug (`create_auth_ui` и т.п.) строками в `server/plan.yml` —
-  только через префикс `add_to_client_plan_`.
+- **Не** писать client-slug (`create-auth-ui` и т.п.) строками в `server/plan.yml` —
+  только через префикс `add-to-client-plan-`.
+- BC/code change **запрещено** трогать `../client/plan.yml` (нет задач append в tasks.md) — только change `add-to-client-plan-*`.
 - Server **не** решает сам, когда кормить client: только исполняет порядок плана.
 - Append: не overwrite; не править/удалять существующие строки; не `[x]` в чужом plan.
 
@@ -252,6 +254,6 @@ Skills: `.agents/skills/domain-drawio-map`, `.agents/skills/context-map-drawio`
 4. Application/domain без `@repo/contract`?
 5. Карта `src/<slug>/docs/.dio` актуальна (`npm run docs:domain-map -- <slug>`)?
 6. Context map / `docs/<slug>/domain.md` синхронизированы (`npm run docs:context-map -- --context <slug>`)?
-7. Если текущий change — `add_to_client_plan_*`: в `../client/plan.yml` дописан нужный slug (append-only)?
+7. Если текущий change — `add-to-client-plan-*`: в `../client/plan.yml` дописан нужный slug (append-only)?
 8. `npm run check` зелёный (для code/BC changes)?
 

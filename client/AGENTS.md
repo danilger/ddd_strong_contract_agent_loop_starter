@@ -87,8 +87,10 @@ import { Y } from "@/features/b";        // features → features
 ## Loop / Pi
 
 - Агент: **только Pi** (loop `projectPath` = `client/`).
-- `plan.yml` на старте пуст; наполняется **только** через server-change `add_to_client_plan_*` (append),
+- `plan.yml` на старте пуст; наполняется **только** через server-change `add-to-client-plan-*` (append),
   после **server-handoff** (этап 14) и apply соответствующих server changes — не раньше.
+  Slug’и — kebab-case only.
+- Scope текущего change: блок `### <slug>` в `## Очередь (plan.yml)` в [`project.md`](./project.md) (когда секция есть).
 - **Запрещено** писать в `plan.yml`, `contract/**`, `server/**`.
   Tool-lock loop отказывает write/edit/bash в `../contract/` (как readonly `plan.yml`).
 - Прогресс = `openspec/changes` (active/archive). Если plan опустел — loop стоп; после новых строк — рестарт.

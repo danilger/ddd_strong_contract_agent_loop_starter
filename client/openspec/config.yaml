@@ -3,8 +3,10 @@ schema: spec-driven
 context: |
   Пакет client — Vite React FSD v2.1, Playwright UI e2e.
   Агент: только Pi (cwd / projectPath = client/).
-  plan.yml наполняется только apply server-change add_to_client_plan_* (append).
+  plan.yml наполняется только apply server-change add-to-client-plan-* (append).
   Этот агент plan.yml не пишет.
+  Change name (propose): только kebab-case; без underscores.
+  Scope текущего change: ## Очередь в project.md (### <slug> 1:1 с plan.yml), когда секция есть.
   Язык: русский.
 
 rules:
@@ -12,6 +14,7 @@ rules:
     - Формат Requirement + Scenario (WHEN/THEN)
     - SHALL/MUST; язык требований: русский
   proposal:
+    - "Change name: kebab-case only (^[a-z0-9]+(-[a-z0-9]+)*$); без _"
     - "Обязательная секция ## Affected Files с ### Created и ### Modified"
     - "Пути posix от корня репозитория"
     - "Запрещены правки contract/**, server/**, client/plan.yml (loop tool-lock на ../contract/)"

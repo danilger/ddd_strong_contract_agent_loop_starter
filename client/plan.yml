@@ -1,2 +1,3 @@
-# empty until server executes add_to_client_plan_<client-slug>
+# empty until server executes add-to-client-plan-<client-slug>
 # Do not pre-fill from root handoff.
+# Slug format: kebab-case only — no underscores.

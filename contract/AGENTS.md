@@ -61,8 +61,9 @@ contract/src/
 ## Loop / Pi
 
 - Агент в этом каталоге: **только Pi** (и loop с `projectPath` = `contract/`).
-- `plan.yml` автономен: slug’и `*-contract`, без зависимости от server/client plans.
+- `plan.yml` автономен: slug’и kebab `*-contract` (например `auth-contract`), без `_`.
   Наполняет root на **этапе 11 (contract_handoff)**; `server/plan.yml` на этой фазе не пишется.
+- Scope текущего change: блок `### <slug>` в секции `## Очередь (plan.yml)` в [`project.md`](./project.md) (плюс общий продукт выше).
 - **Writers `contract/**`:** contract loop; root на **этапе 13** (`review_contract`) для правок после review.
   Server/client loops жёстко заблокированы tool-lock’ом на `../contract/`.
   Не править `server/` / `client/` из этого контура.
